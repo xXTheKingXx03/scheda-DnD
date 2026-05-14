@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Scheda Personaggio - Cartomancer Arcano</title>
+    <title>Scheda Personaggio - Cartomancer Arcano (Statistiche complete)</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,6 @@
             color: #f2e8d5;
         }
 
-        /* contenitore principale a 2 colonne flessibile */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -28,7 +27,6 @@
             align-items: start;
         }
 
-        /* stile card generale */
         .card {
             background: #fff7ef;
             background-image: radial-gradient(circle at 25% 40%, rgba(200, 170, 120, 0.05) 2%, transparent 2.5%);
@@ -51,7 +49,7 @@
             margin-bottom: 1.2rem;
             color: #4a2e1e;
             letter-spacing: -0.3px;
-            text-shadow: 1px 1px 0 rgba(255,235,190,0.6);
+            text-shadow: 1px 1px 0 rgba(255, 235, 190, 0.6);
         }
 
         .card h3 {
@@ -208,6 +206,46 @@
             border-left: 4px solid #b67b2e;
         }
 
+        /* stat boxes per caratteristiche */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+        .stat-card {
+            background: #efe2cf;
+            border-radius: 20px;
+            text-align: center;
+            padding: 0.6rem;
+            box-shadow: inset 0 0 0 1px #fff3e2, 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .stat-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 0.2rem 0;
+        }
+        .stat-mod {
+            font-size: 1rem;
+            background: #4a2e1e;
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            color: #ffefbf;
+        }
+        .stat-card input {
+            width: 80px;
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
         @media (max-width: 880px) {
             .container {
                 grid-template-columns: 1fr;
@@ -235,14 +273,22 @@
             border-radius: 60px;
             color: #ffd966;
         }
+        .action-list {
+            list-style-type: none;
+        }
+        .action-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.2rem;
+            border-left: 3px solid #b8860b;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- COLONNA SINISTRA: Statistiche vitali, inventario, note -->
+    <!-- COLONNA SINISTRA: Vitalità, Zaino, Note, e ora STATISTICHE -->
     <div>
-        <!-- VITA e modificatori principali -->
+        <!-- VITA e modificatori -->
         <div class="card">
             <h2>✨ Vitalità & Iniziativa</h2>
             <div class="stat-block">
@@ -256,15 +302,66 @@
                         </div>
                     </div>
                     <div><strong>⚡ Iniziativa</strong><br>
-                        <span class="initiative-badge">+12</span>
-                        <div><small>(DES +2 · INT +5 · Allerta +5)</small></div>
+                        <span class="initiative-badge" id="initDisplay">+12</span>
+                        <div><small>(DES + INT + Allerta+5)</small></div>
                     </div>
                     <div><strong>🧠 Intelligenza</strong><br>
-                        <span class="badge" style="font-size:1.2rem;">20 (+5)</span>
+                        <span class="badge" style="font-size:1.2rem;" id="intModDisplay">20 (+5)</span>
                     </div>
                 </div>
-                <div><strong>🤸 Destrezza:</strong> 14 (+2) &nbsp;|&nbsp; <strong>📜 Bonus Tiri Salvezza:</strong> INT +8 (stima)</div>
+                <div><strong>🤸 Destrezza:</strong> <span id="dexValDisplay">14 (+2)</span> &nbsp;|&nbsp; <strong>📜 Bonus Competenza:</strong> +3 (stimato)</div>
             </div>
+        </div>
+
+        <!-- STATISTICHE COMPLETE (Forza, Destrezza, Costituzione, Intelligenza, Saggezza, Carisma) modificabili -->
+        <div class="card">
+            <h2>⚔️ Statistiche Personaggio</h2>
+            <div class="stats-grid" id="abilitiesGrid">
+                <!-- Forza -->
+                <div class="stat-card">
+                    <div class="stat-name">FORZA</div>
+                    <input type="number" id="strScore" value="10" step="1" min="1" max="30">
+                    <div class="stat-mod" id="strMod">+0</div>
+                </div>
+                <!-- Destrezza -->
+                <div class="stat-card">
+                    <div class="stat-name">DESTREZZA</div>
+                    <input type="number" id="dexScore" value="14" step="1" min="1" max="30">
+                    <div class="stat-mod" id="dexMod">+2</div>
+                </div>
+                <!-- Costituzione -->
+                <div class="stat-card">
+                    <div class="stat-name">COSTITUZIONE</div>
+                    <input type="number" id="conScore" value="14" step="1" min="1" max="30">
+                    <div class="stat-mod" id="conMod">+2</div>
+                </div>
+                <!-- Intelligenza -->
+                <div class="stat-card">
+                    <div class="stat-name">INTELLIGENZA</div>
+                    <input type="number" id="intScore" value="20" step="1" min="1" max="30">
+                    <div class="stat-mod" id="intMod">+5</div>
+                </div>
+                <!-- Saggezza -->
+                <div class="stat-card">
+                    <div class="stat-name">SAGGEZZA</div>
+                    <input type="number" id="wisScore" value="12" step="1" min="1" max="30">
+                    <div class="stat-mod" id="wisMod">+1</div>
+                </div>
+                <!-- Carisma -->
+                <div class="stat-card">
+                    <div class="stat-name">CARISMA</div>
+                    <input type="number" id="chaScore" value="10" step="1" min="1" max="30">
+                    <div class="stat-mod" id="chaMod">+0</div>
+                </div>
+            </div>
+            <div class="stat-block" style="margin-top: 8px;">
+                <div class="flex-row">
+                    <span><strong>🛡️ Classe Armatura (CA):</strong> <span id="acValue">12</span> (base 10 + DES)</span>
+                    <span><strong>🏃 Velocità:</strong> 9 m (30 ft)</span>
+                    <span><strong>🎯 Bonus Tiro Salvezza INT:</strong> +8</span>
+                </div>
+            </div>
+            <small><i>Modifica i valori numerici: i modificatori e la CA si aggiornano in tempo reale.</i></small>
         </div>
 
         <!-- ZAINO (Inventario modificabile) -->
@@ -288,9 +385,9 @@
         </div>
     </div>
 
-    <!-- COLONNA DESTRA: Slot incantesimi, risorse speciali -->
+    <!-- COLONNA DESTRA: Slot incantesimi, risorse speciali, talenti -->
     <div>
-        <!-- SLOT INCANTESIMI INTERATTIVI (indicatori) -->
+        <!-- SLOT INCANTESIMI INTERATTIVI -->
         <div class="card">
             <h2>🔮 Slot Incantesimi</h2>
             <p style="font-size:0.85rem;"><i>Clicca + / - per consumare o recuperare slot. Modifica il numero massimo con i pulsanti laterali.</i></p>
@@ -345,7 +442,7 @@
         </div>
     </div>
 
-    <!-- SEZIONE FULL-WIDTH: descrizioni complete dei talenti e caratteristiche (esattamente dal file) -->
+    <!-- SEZIONE FULL-WIDTH: descrizioni originali dei talenti -->
     <div class="full-width card">
         <h2>📖 Tratti & Talentu (descrizioni originali)</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1rem;">
@@ -372,8 +469,48 @@
                 </div>
             </div>
         </div>
-        <div class="feature-text" style="margin-top: 0.6rem;">
-            <strong>📌 Nota rapida:</strong> Il personaggio ha INT 20 (mod +5), DES +2, Iniziativa +12. Possiede già tutti i tratti sopra e può usare carte come focus magico.
+    </div>
+
+    <!-- NUOVA SEZIONE: AZIONI IN COMBATTIMENTO (spiegazione dettagliata) -->
+    <div class="full-width card">
+        <h2>⚔️ AZIONI IN COMBATTIMENTO</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.2rem;">
+            <div class="feature-text" style="background: #f8efdf;">
+                <h3 style="margin-top:0;">🎴 Azione Standard</h3>
+                <ul class="action-list">
+                    <li><strong>🔮 Lanciare un incantesimo</strong> (es. Palla di Fuoco, Silvery Barbs, ecc.) usando uno slot o gli usi gratuiti di Fey Touched.</li>
+                    <li><strong>📜 Utilizzare Hidden Ace</strong> (azione bonus, non standard – vedi sotto).</li>
+                    <li><strong>🗡️ Attacco con arma semplice</strong> (pugnale, dardo, mazza: bonus +2/4).</li>
+                    <li><strong>Aiutare, Schivare, Ritirarsi, Usare Oggetto</strong> (azioni standard D&D).</li>
+                </ul>
+            </div>
+            <div class="feature-text" style="background: #f8efdf;">
+                <h3 style="margin-top:0;">🌀 Azione Bonus</h3>
+                <ul class="action-list">
+                    <li><strong>🃏 Hidden Ace:</strong> sfoderare la carta imbevuta e lanciare l'incantesimo (gratuito, senza slot).</li>
+                    <li><strong>✨ Misty Step (teletrasporto)</strong> – se usi la versione gratuita o con slot, è sempre azione bonus.</li>
+                    <li><strong>🎴 Prestidigitazione (trucchetto)</strong> – effetti minori ma creativi, nascondendo componenti.</li>
+                </ul>
+            </div>
+            <div class="feature-text" style="background: #f8efdf;">
+                <h3 style="margin-top:0;">⚡ Reazione</h3>
+                <ul class="action-list">
+                    <li><strong>Silvery Barbs</strong> (obbliga una creatura a ritirare un tiro e concede vantaggio a un alleato).</li>
+                    <li><strong>Attacco di opportunità</strong> (se hai un'arma corpo a corpo).</li>
+                </ul>
+            </div>
+            <div class="feature-text" style="background: #f8efdf;">
+                <h3 style="margin-top:0;">🎭 Tattiche speciali da Cartomancer</h3>
+                <ul class="action-list">
+                    <li><strong>Nascondere componenti:</strong> I tuoi incantesimi sembrano semplice conversazione e giochi di carte – <strong>difficili da contrastare</strong> e da riconoscere.</li>
+                    <li><strong>Mazzo come focus:</strong> Non hai bisogno di una borsa componenti, le tue carte sostituiscono i materiali.</li>
+                    <li><strong>Iniziativa +12:</strong> Spesso agisci per primo, puoi lanciare controllo o difesa prima dei nemici.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="stat-block" style="margin-top: 1rem;">
+            <p><strong>💡 Esempio di turno efficace:</strong> Azione standard → lanciare <em>Silvery Barbs</em> per proteggere un alleato; Azione Bonus → Misty Step per posizionarti; Reazione → un secondo Silvery Barbs se necessario. Oppure: Azione standard per un incantesimo potente, Azione Bonus per sfoderare Hidden Ace e lanciare un altro incantesimo imbevuto.</p>
+            <p><strong>🎴 Nota su Prestidigitazione:</strong> Puoi creare effetti sensoriali, scaldare/raffreddare, pulire o sporcare, il tutto mentre giochi distrattamente con le carte, senza destare sospetti.</p>
         </div>
     </div>
 </div>
@@ -401,6 +538,7 @@
                 if (!isNaN(index)) {
                     inventoryItems.splice(index, 1);
                     renderInventory();
+                    saveInventoryToLocal();
                 }
             });
         });
@@ -413,6 +551,7 @@
             inventoryItems.push(newName);
             renderInventory();
             input.value = '';
+            saveInventoryToLocal();
         } else {
             alert("Inserisci il nome dell'oggetto");
         }
@@ -427,9 +566,64 @@
         });
     }
 
+    // -------------------- STATISTICHE DINAMICHE + AGGIORNAMENTO --------------------
+    function calcMod(score) { return Math.floor((score - 10) / 2); }
+    function updateAbilities() {
+        const strVal = parseInt(document.getElementById('strScore').value, 10) || 10;
+        const dexVal = parseInt(document.getElementById('dexScore').value, 10) || 10;
+        const conVal = parseInt(document.getElementById('conScore').value, 10) || 10;
+        const intVal = parseInt(document.getElementById('intScore').value, 10) || 10;
+        const wisVal = parseInt(document.getElementById('wisScore').value, 10) || 10;
+        const chaVal = parseInt(document.getElementById('chaScore').value, 10) || 10;
+        
+        document.getElementById('strMod').innerText = (calcMod(strVal) >= 0 ? '+' : '') + calcMod(strVal);
+        document.getElementById('dexMod').innerText = (calcMod(dexVal) >= 0 ? '+' : '') + calcMod(dexVal);
+        document.getElementById('conMod').innerText = (calcMod(conVal) >= 0 ? '+' : '') + calcMod(conVal);
+        document.getElementById('intMod').innerText = (calcMod(intVal) >= 0 ? '+' : '') + calcMod(intVal);
+        document.getElementById('wisMod').innerText = (calcMod(wisVal) >= 0 ? '+' : '') + calcMod(wisVal);
+        document.getElementById('chaMod').innerText = (calcMod(chaVal) >= 0 ? '+' : '') + calcMod(chaVal);
+        
+        // Aggiorna visuale destrezza e intelligenza nella sezione vitalità
+        document.getElementById('dexValDisplay').innerHTML = `${dexVal} (${calcMod(dexVal) >= 0 ? '+' : ''}${calcMod(dexVal)})`;
+        document.getElementById('intModDisplay').innerHTML = `${intVal} (${calcMod(intVal) >= 0 ? '+' : ''}${calcMod(intVal)})`;
+        
+        // CA: 10 + mod destrezza
+        const ac = 10 + calcMod(dexVal);
+        document.getElementById('acValue').innerText = ac;
+        
+        // Iniziativa: DES mod + INT mod + 5 (Alert)
+        const initTotal = calcMod(dexVal) + calcMod(intVal) + 5;
+        document.getElementById('initDisplay').innerHTML = (initTotal >= 0 ? '+' : '') + initTotal;
+        
+        // salva in localStorage
+        const stats = { str: strVal, dex: dexVal, con: conVal, int: intVal, wis: wisVal, cha: chaVal };
+        localStorage.setItem('characterStats', JSON.stringify(stats));
+    }
+    
+    // carica statistiche da localstorage
+    function loadStatsFromLocal() {
+        const saved = localStorage.getItem('characterStats');
+        if (saved) {
+            try {
+                const s = JSON.parse(saved);
+                if (s.str) document.getElementById('strScore').value = s.str;
+                if (s.dex) document.getElementById('dexScore').value = s.dex;
+                if (s.con) document.getElementById('conScore').value = s.con;
+                if (s.int) document.getElementById('intScore').value = s.int;
+                if (s.wis) document.getElementById('wisScore').value = s.wis;
+                if (s.cha) document.getElementById('chaScore').value = s.cha;
+            } catch(e) {}
+        }
+        updateAbilities();
+    }
+    
+    // eventi statistiche
+    const statInputs = ['strScore', 'dexScore', 'conScore', 'intScore', 'wisScore', 'chaScore'];
+    statInputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', updateAbilities);
+    });
+    
     // -------------------- GESTIONE SLOT INCANTESIMI --------------------
-    // struttura: { maxSlots, usedSlots }
-    // livelli 1-5
     let spellLevels = [
         { level: 1, max: 4, used: 0 },
         { level: 2, max: 3, used: 0 },
@@ -462,255 +656,98 @@
             `;
             container.appendChild(levelDiv);
         }
-        // attacca eventi dopo il render
+        attachSlotEvents();
+        saveSpellData();
+    }
+    
+    function attachSlotEvents() {
         document.querySelectorAll('.decUsed').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-                if (spellLevels[idx].used > 0) {
-                    spellLevels[idx].used--;
-                    renderSpellSlots();
-                }
+                if (spellLevels[idx].used > 0) { spellLevels[idx].used--; renderSpellSlots(); }
             });
         });
         document.querySelectorAll('.incUsed').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-                if (spellLevels[idx].used < spellLevels[idx].max) {
-                    spellLevels[idx].used++;
-                    renderSpellSlots();
-                }
-            });
+            const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
+            btn.addEventListener('click', () => { if (spellLevels[idx].used < spellLevels[idx].max) { spellLevels[idx].used++; renderSpellSlots(); } });
         });
         document.querySelectorAll('.resetUsedLevel').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-                spellLevels[idx].used = 0;
-                renderSpellSlots();
-            });
+            const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
+            btn.addEventListener('click', () => { spellLevels[idx].used = 0; renderSpellSlots(); });
         });
         document.querySelectorAll('.decMax').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-                if (spellLevels[idx].max > 0) {
-                    spellLevels[idx].max--;
-                    if (spellLevels[idx].used > spellLevels[idx].max) spellLevels[idx].used = spellLevels[idx].max;
-                    renderSpellSlots();
-                }
-            });
+            const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
+            btn.addEventListener('click', () => { if(spellLevels[idx].max>0){ spellLevels[idx].max--; if(spellLevels[idx].used>spellLevels[idx].max) spellLevels[idx].used=spellLevels[idx].max; renderSpellSlots(); } });
         });
         document.querySelectorAll('.incMax').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-                spellLevels[idx].max++;
-                renderSpellSlots();
-            });
+            const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
+            btn.addEventListener('click', () => { spellLevels[idx].max++; renderSpellSlots(); });
         });
     }
-
-    function resetAllSpellUsed() {
-        for (let s of spellLevels) {
-            s.used = 0;
-        }
-        renderSpellSlots();
-    }
-
-    // -------------------- LONG REST (resetta molte risorse) --------------------
-    function performLongRest() {
-        // ripristina PF correnti al massimo (se max HP maggiore di 0)
-        const maxHpInput = document.getElementById('maxHp');
-        const currentHpInput = document.getElementById('currentHp');
-        let maxHp = parseInt(maxHpInput.value, 10);
-        if (!isNaN(maxHp)) {
-            currentHpInput.value = maxHp;
-        } else {
-            currentHpInput.value = 0;
-        }
-        // temp HP a 0
-        const tempHpInput = document.getElementById('tempHp');
-        if (tempHpInput) tempHpInput.value = 0;
-        
-        // reset tutti gli slot incantesimo usati
-        for (let s of spellLevels) {
-            s.used = 0;
-        }
-        renderSpellSlots();
-        
-        // reset Fey Touched usi gratuiti
-        const mistyCheck = document.getElementById('mistyStepFreeUsed');
-        const silveryCheck = document.getElementById('silveryBarbsFreeUsed');
-        if (mistyCheck) mistyCheck.checked = false;
-        if (silveryCheck) silveryCheck.checked = false;
-        
-        // reset Hidden Ace (carta consumata → non consumata, ma l'incantesimo imbuito può rimanere? il giocatore può ri-scegliere, ma rimuoviamo il flag)
-        const aceUsed = document.getElementById('aceUsedCheckbox');
-        if (aceUsed) aceUsed.checked = false;
-        // Opzionale: suggerire al giocatore di reimbevare l'incantesimo -> non cancelliamo il nome, ma reset del flag.
-        // lasciamo il campo spell name intatto, ma il giocatore può modificarlo a piacimento.
-        
-        alert("🌙 Riposo lungo completato! PF ripristinati, slot incantesimi azzerati, usi gratuiti di Fey Touched recuperati, carta Hidden Ace non consumata (se hai reimbevuto dopo il riposo, ricordati di selezionare il nuovo incantesimo).");
+    
+    function resetAllSpellUsed() { spellLevels.forEach(s => s.used = 0); renderSpellSlots(); }
+    function saveSpellData() { localStorage.setItem('spellSlotsData', JSON.stringify(spellLevels.map(l=>({max:l.max, used:l.used})))); }
+    function loadSpellData() {
+        const raw = localStorage.getItem('spellSlotsData');
+        if(raw) { try { const saved = JSON.parse(raw); if(saved.length===spellLevels.length) saved.forEach((s,i)=>{ spellLevels[i].max=s.max; spellLevels[i].used=s.used; }); renderSpellSlots(); } catch(e){} }
     }
     
-    // reset solo Fey Touched
-    function resetFeyTouchedOnly() {
+    function performLongRest() {
+        const maxHp = parseInt(document.getElementById('maxHp').value,10);
+        document.getElementById('currentHp').value = isNaN(maxHp)?0:maxHp;
+        document.getElementById('tempHp').value = 0;
+        resetAllSpellUsed();
+        document.getElementById('mistyStepFreeUsed').checked = false;
+        document.getElementById('silveryBarbsFreeUsed').checked = false;
+        document.getElementById('aceUsedCheckbox').checked = false;
+        localStorage.setItem('mistyUsed','false'); localStorage.setItem('silveryUsed','false'); localStorage.setItem('aceUsedFlag','false');
+        alert("🌙 Riposo lungo completato! PF, slot, usi gratuiti e carta Hidden Ace rigenerati.");
+    }
+    function resetFeyTouchedOnly() { document.getElementById('mistyStepFreeUsed').checked=false; document.getElementById('silveryBarbsFreeUsed').checked=false; localStorage.setItem('mistyUsed','false'); localStorage.setItem('silveryUsed','false'); }
+    function resetHiddenAceUsed() { document.getElementById('aceUsedCheckbox').checked=false; localStorage.setItem('aceUsedFlag','false'); }
+    
+    function saveInventoryToLocal() { localStorage.setItem('carto_inventory', JSON.stringify(inventoryItems)); }
+    function loadInventory() {
+        const stored = localStorage.getItem('carto_inventory');
+        if(stored) { try { inventoryItems = JSON.parse(stored); if(!Array.isArray(inventoryItems)) inventoryItems=[]; renderInventory(); } catch(e){} }
+        else renderInventory();
+    }
+    
+    // persistenza flag e note
+    function loadMisc() {
+        const freeNotes = document.getElementById('freeNotes');
+        if(localStorage.getItem('carto_notes')) freeNotes.value = localStorage.getItem('carto_notes');
+        freeNotes.addEventListener('input', () => localStorage.setItem('carto_notes', freeNotes.value));
+        const hiddenSpell = document.getElementById('hiddenAceSpell');
+        if(localStorage.getItem('hiddenAceSpellStore')) hiddenSpell.value = localStorage.getItem('hiddenAceSpellStore');
+        hiddenSpell.addEventListener('input',()=>localStorage.setItem('hiddenAceSpellStore', hiddenSpell.value));
+        const aceChk = document.getElementById('aceUsedCheckbox');
+        if(localStorage.getItem('aceUsedFlag')==='true') aceChk.checked=true;
+        aceChk.addEventListener('change',()=>localStorage.setItem('aceUsedFlag', aceChk.checked));
         const misty = document.getElementById('mistyStepFreeUsed');
         const silvery = document.getElementById('silveryBarbsFreeUsed');
-        if (misty) misty.checked = false;
-        if (silvery) silvery.checked = false;
+        if(localStorage.getItem('mistyUsed')==='true') misty.checked=true;
+        if(localStorage.getItem('silveryUsed')==='true') silvery.checked=true;
+        misty.addEventListener('change',()=>localStorage.setItem('mistyUsed', misty.checked));
+        silvery.addEventListener('change',()=>localStorage.setItem('silveryUsed', silvery.checked));
+        const curHp = document.getElementById('currentHp'), maxHp = document.getElementById('maxHp'), tempHp = document.getElementById('tempHp');
+        if(localStorage.getItem('hp_cur')) curHp.value = localStorage.getItem('hp_cur');
+        if(localStorage.getItem('hp_max')) maxHp.value = localStorage.getItem('hp_max');
+        if(localStorage.getItem('hp_temp')) tempHp.value = localStorage.getItem('hp_temp');
+        curHp.addEventListener('change',()=>localStorage.setItem('hp_cur', curHp.value));
+        maxHp.addEventListener('change',()=>localStorage.setItem('hp_max', maxHp.value));
+        tempHp.addEventListener('change',()=>localStorage.setItem('hp_temp', tempHp.value));
     }
-
-    // reset Hidden Ace card usage
-    function resetHiddenAceUsed() {
-        const aceBox = document.getElementById('aceUsedCheckbox');
-        if (aceBox) aceBox.checked = false;
-    }
-
-    // -------------------- SALVA STATI HP E NOTE (in realtime senza salvataggi persistenti ma modificabili) --------------------
-    // Le statistiche vita sono direttamente collegate ai campi input, nessuna store aggiuntivo necessario.
-    
-    // gestione note libere: salvataggio locale opzionale (solo per comodità ma non obbligatorio), facciamo in modo che venga mantenuto in sessione.
-    const freeNotes = document.getElementById('freeNotes');
-    if(localStorage.getItem('carto_notes')) {
-        freeNotes.value = localStorage.getItem('carto_notes');
-    }
-    freeNotes.addEventListener('input', () => {
-        localStorage.setItem('carto_notes', freeNotes.value);
-    });
-    
-    // Salva anche hidden ace spell e custom se volessi, ma non necessario.
     
     // inizializzazione
-    renderInventory();
-    renderSpellSlots();
-    
-    // eventi pulsanti globali
+    loadStatsFromLocal();
+    loadInventory();
+    loadSpellData();
+    loadMisc();
     document.getElementById('resetAllSlots')?.addEventListener('click', resetAllSpellUsed);
     document.getElementById('longRestBtn')?.addEventListener('click', performLongRest);
     document.getElementById('resetFeyTouched')?.addEventListener('click', resetFeyTouchedOnly);
     document.getElementById('clearAceUsed')?.addEventListener('click', resetHiddenAceUsed);
-    
-    // validazione incrociata per evitare che hp max scenda sotto current, ma sono campi editabili liberamente
-    const currentHpField = document.getElementById('currentHp');
-    const maxHpField = document.getElementById('maxHp');
-    function validateHp() {
-        let cur = parseInt(currentHpField.value, 10);
-        let max = parseInt(maxHpField.value, 10);
-        if (isNaN(cur)) cur = 0;
-        if (isNaN(max)) max = 0;
-        if (cur > max && max >= 0) currentHpField.value = max;
-        if (cur < 0) currentHpField.value = 0;
-        if (max < 0) maxHpField.value = 0;
-    }
-    currentHpField.addEventListener('change', validateHp);
-    maxHpField.addEventListener('change', validateHp);
-    
-    // piccolo fix per pulsanti disabilitati dinamici
-    // Inoltre, per rendere più fluida l'esperienza: mostrare sempre modificatore INT ed iniziativa statico
-    // tutto allineato al file.
-    
-    // aggiungiamo possibilità di tenere traccia dell'uso di Misty e Silvery Barbs nei riposi lunghi già gestiti.
-    // E per renderlo intuitivo, anche la Hidden Ace ha il suo checkbox.
-    // Mostriamo i dati completi del file.
-    // aggiungere info dettagliate anche come testo nel footer.
-    
-    // EVENTUALE funzione per sync iniziativa ma è statica
-    console.log("Scheda personalizzabile pronta – tutte le info dal PDF incluse.");
-    
-    // Caricamento eventuali note sul Hidden Ace sull'UI
-    const hiddenAceSpellInput = document.getElementById('hiddenAceSpell');
-    if (localStorage.getItem('hiddenAceSpellStore')) {
-        hiddenAceSpellInput.value = localStorage.getItem('hiddenAceSpellStore');
-    }
-    hiddenAceSpellInput.addEventListener('input', () => {
-        localStorage.setItem('hiddenAceSpellStore', hiddenAceSpellInput.value);
-    });
-    
-    const aceUsedFlag = document.getElementById('aceUsedCheckbox');
-    if (localStorage.getItem('aceUsedFlag') === 'true') aceUsedFlag.checked = true;
-    aceUsedFlag.addEventListener('change', () => {
-        localStorage.setItem('aceUsedFlag', aceUsedFlag.checked);
-    });
-    
-    // anche per i checkbox di fey touched teniamo traccia
-    const mistyBox = document.getElementById('mistyStepFreeUsed');
-    const silveryBox = document.getElementById('silveryBarbsFreeUsed');
-    if (localStorage.getItem('mistyUsed') === 'true') mistyBox.checked = true;
-    if (localStorage.getItem('silveryUsed') === 'true') silveryBox.checked = true;
-    mistyBox.addEventListener('change', () => localStorage.setItem('mistyUsed', mistyBox.checked));
-    silveryBox.addEventListener('change', () => localStorage.setItem('silveryUsed', silveryBox.checked));
-    
-    // memorizza slot incantesimi in localStorage opzionale? non richiesto ma per persistenza base
-    function saveSpellData() {
-        const data = spellLevels.map(l => ({max: l.max, used: l.used}));
-        localStorage.setItem('spellSlotsData', JSON.stringify(data));
-    }
-    function loadSpellData() {
-        const raw = localStorage.getItem('spellSlotsData');
-        if (raw) {
-            try {
-                const saved = JSON.parse(raw);
-                if (Array.isArray(saved) && saved.length === spellLevels.length) {
-                    for (let i=0; i<saved.length; i++) {
-                        if (typeof saved[i].max === 'number') spellLevels[i].max = saved[i].max;
-                        if (typeof saved[i].used === 'number') spellLevels[i].used = saved[i].used;
-                    }
-                    renderSpellSlots();
-                }
-            } catch(e) {}
-        }
-    }
-    // salva ogni volta che si modifica uno slot - richiamiamo dalla render dopo modifiche
-    const origRender = renderSpellSlots;
-    window.renderSpellSlots = function() {
-        origRender();
-        saveSpellData();
-    };
-    renderSpellSlots = window.renderSpellSlots;
-    renderSpellSlots();
-    loadSpellData();
-    
-    // salva anche hp max/current
-    function persistHp() {
-        localStorage.setItem('hp_cur', currentHpField.value);
-        localStorage.setItem('hp_max', maxHpField.value);
-        localStorage.setItem('hp_temp', document.getElementById('tempHp').value);
-    }
-    currentHpField.addEventListener('change', persistHp);
-    maxHpField.addEventListener('change', persistHp);
-    document.getElementById('tempHp').addEventListener('change', persistHp);
-    if (localStorage.getItem('hp_cur')) currentHpField.value = localStorage.getItem('hp_cur');
-    if (localStorage.getItem('hp_max')) maxHpField.value = localStorage.getItem('hp_max');
-    if (localStorage.getItem('hp_temp')) document.getElementById('tempHp').value = localStorage.getItem('hp_temp');
-    
-    // salva inventario
-    function saveInventory() {
-        localStorage.setItem('carto_inventory', JSON.stringify(inventoryItems));
-    }
-    const origInvRender = renderInventory;
-    window.renderInventory = function() {
-        origInvRender();
-        saveInventory();
-    };
-    renderInventory = window.renderInventory;
-    const storedInv = localStorage.getItem('carto_inventory');
-    if (storedInv) {
-        try {
-            inventoryItems = JSON.parse(storedInv);
-            if (!Array.isArray(inventoryItems)) inventoryItems = [];
-            renderInventory();
-        } catch(e) {}
-    } else {
-        renderInventory();
-    }
-    window.renderInventory();
-    
-    // override addItem
-    const oldAdd = document.getElementById('addItemBtn').onclick;
-    document.getElementById('addItemBtn').addEventListener('click', () => {
-        const input = document.getElementById('newItemName');
-        if (input.value.trim()) inventoryItems.push(input.value.trim());
-        renderInventory();
-        input.value = '';
-    });
 </script>
 </body>
 </html>
