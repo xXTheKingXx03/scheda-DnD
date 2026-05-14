@@ -2,8 +2,8 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Scheda Personaggio - Cartomancer Arcano (Statistiche complete)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Scheda Personaggio - Cartomancer Arcano (CA modificabile + monete)</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
         body {
             background: #2a2418;
             font-family: 'Segoe UI', 'Garamond', 'Georgia', serif;
-            padding: 2rem 1.5rem;
+            padding: 1rem 0.8rem;
             color: #f2e8d5;
         }
 
@@ -22,9 +22,18 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.8rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
             align-items: start;
+        }
+
+        @media (min-width: 880px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+            .full-width {
+                grid-column: span 2;
+            }
         }
 
         .card {
@@ -32,9 +41,9 @@
             background-image: radial-gradient(circle at 25% 40%, rgba(200, 170, 120, 0.05) 2%, transparent 2.5%);
             background-size: 24px 24px;
             border-radius: 28px;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 245, 215, 0.8);
-            padding: 1.4rem 1.6rem;
-            margin-bottom: 1.8rem;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 245, 215, 0.8);
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
             border: 1px solid #e6d5b3;
             transition: all 0.1s ease;
             color: #2c241a;
@@ -42,20 +51,18 @@
 
         .card h2 {
             font-family: 'Cinema', 'Georgia', serif;
-            font-size: 1.7rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            border-left: 8px solid #b8860b;
-            padding-left: 1rem;
-            margin-bottom: 1.2rem;
+            border-left: 6px solid #b8860b;
+            padding-left: 0.8rem;
+            margin-bottom: 1rem;
             color: #4a2e1e;
-            letter-spacing: -0.3px;
-            text-shadow: 1px 1px 0 rgba(255, 235, 190, 0.6);
         }
 
         .card h3 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            margin: 0.8rem 0 0.6rem 0;
+            margin: 0.6rem 0 0.4rem 0;
             color: #6b3f1c;
             border-bottom: 2px dotted #dec27a;
             display: inline-block;
@@ -64,44 +71,35 @@
         .stat-block {
             background: #f7f0e2;
             border-radius: 20px;
-            padding: 0.8rem 1rem;
-            margin: 0.6rem 0;
-            box-shadow: inset 0 0 0 1px #fdf7ed, 0 3px 6px rgba(0,0,0,0.1);
+            padding: 0.7rem 0.9rem;
+            margin: 0.5rem 0;
+            box-shadow: inset 0 0 0 1px #fdf7ed, 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .flex-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.8rem;
             align-items: center;
             justify-content: space-between;
         }
 
         .hp-area {
             display: flex;
-            gap: 1rem;
+            gap: 0.6rem;
             align-items: baseline;
             flex-wrap: wrap;
-        }
-
-        .hp-box {
-            background: #2e241f;
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
-            color: #fadfaf;
-            font-weight: bold;
         }
 
         input, textarea, select {
             background: #fffcf5;
             border: 1px solid #cbad7a;
-            border-radius: 32px;
-            padding: 0.4rem 0.8rem;
+            border-radius: 40px;
+            padding: 0.5rem 0.8rem;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #1f1b14;
             font-weight: 500;
-            transition: 0.1s;
         }
 
         input:focus, textarea:focus {
@@ -113,57 +111,52 @@
         button {
             background: #cfb27c;
             border: none;
-            border-radius: 32px;
-            padding: 0.3rem 0.9rem;
+            border-radius: 40px;
+            padding: 0.5rem 1rem;
             font-weight: bold;
             font-family: inherit;
+            font-size: 0.85rem;
             color: #281e12;
             cursor: pointer;
             transition: 0.1s linear;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            min-height: 44px;
         }
 
-        button:hover {
+        button:active {
+            transform: scale(0.96);
             background: #c09a5c;
-            transform: scale(0.97);
-            color: white;
-        }
-
-        .slot-group {
-            background: #efe2cf;
-            border-radius: 20px;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
         }
 
         .slot-level {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: stretch;
             gap: 0.6rem;
-            margin: 0.6rem 0;
+            margin: 0.8rem 0;
             border-bottom: 1px solid #d6c29d;
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.7rem;
         }
 
         .slot-controls {
             display: flex;
+            flex-wrap: wrap;
             gap: 0.5rem;
             align-items: center;
+            justify-content: space-between;
             background: #fcf5e8;
-            padding: 0.2rem 0.7rem;
-            border-radius: 40px;
+            padding: 0.3rem 0.7rem;
+            border-radius: 60px;
         }
 
         .used-counter {
-            min-width: 45px;
+            min-width: 55px;
             text-align: center;
             font-weight: bold;
             background: #4c351e;
             color: #ffecb3;
-            padding: 0.2rem 0.5rem;
-            border-radius: 24px;
+            padding: 0.3rem 0.5rem;
+            border-radius: 40px;
         }
 
         .inventory-item {
@@ -172,16 +165,16 @@
             align-items: center;
             background: #fcf5ea;
             margin: 0.5rem 0;
-            padding: 0.3rem 0.6rem;
-            border-radius: 30px;
+            padding: 0.4rem 0.7rem;
+            border-radius: 40px;
             border-left: 5px solid #b8860b;
         }
 
         .badge {
             background: #2e241f;
             color: #f3dba6;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
             font-size: 0.75rem;
             font-weight: bold;
         }
@@ -190,194 +183,212 @@
             width: 100%;
             min-height: 100px;
             margin-top: 0.5rem;
+            border-radius: 24px;
+            resize: vertical;
         }
 
         .full-width {
-            grid-column: span 2;
+            grid-column: span 1;
+        }
+        @media (min-width: 880px) {
+            .full-width {
+                grid-column: span 2;
+            }
         }
 
         .feature-text {
-            font-size: 0.95rem;
-            line-height: 1.45;
+            font-size: 0.9rem;
+            line-height: 1.4;
             background: #fdf3e4;
-            padding: 0.8rem 1rem;
+            padding: 0.7rem 0.9rem;
             border-radius: 24px;
             margin-top: 0.5rem;
             border-left: 4px solid #b67b2e;
         }
 
-        /* stat boxes per caratteristiche */
+        /* griglia statistiche mobile friendly */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.8rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.7rem;
             margin: 1rem 0;
+        }
+        @media (min-width: 500px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
         .stat-card {
             background: #efe2cf;
             border-radius: 20px;
             text-align: center;
-            padding: 0.6rem;
+            padding: 0.5rem;
             box-shadow: inset 0 0 0 1px #fff3e2, 0 2px 5px rgba(0,0,0,0.1);
         }
         .stat-name {
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-        .stat-value {
-            font-size: 1.6rem;
-            font-weight: 800;
-            margin: 0.2rem 0;
+        .stat-card input {
+            width: 70px;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 5px;
+            padding: 0.3rem;
         }
         .stat-mod {
-            font-size: 1rem;
+            font-size: 0.9rem;
             background: #4a2e1e;
             display: inline-block;
-            padding: 0.2rem 0.8rem;
+            padding: 0.1rem 0.6rem;
             border-radius: 40px;
             color: #ffefbf;
         }
-        .stat-card input {
-            width: 80px;
+
+        .initiative-badge {
+            font-size: 1.4rem;
+            font-weight: bold;
+            background: #1e1710;
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 60px;
+            color: #ffd966;
+        }
+
+        /* sezione monete */
+        .coin-pouch {
+            background: #e8dccb;
+            border-radius: 24px;
+            padding: 0.7rem;
+            margin: 0.8rem 0;
+        }
+        .coin-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .coin-slot {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #faf0e0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 60px;
+        }
+        .coin-slot label {
+            font-weight: bold;
+        }
+        .coin-slot input {
+            width: 75px;
             text-align: center;
-            font-size: 1.2rem;
-            margin-top: 5px;
         }
 
-        @media (max-width: 880px) {
-            .container {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            .full-width {
-                grid-column: span 1;
-            }
-            body {
-                padding: 1rem;
-            }
+        /* pulsanti azione combattimento */
+        .action-list {
+            list-style-type: none;
+            padding-left: 0;
         }
-
+        .action-list li {
+            margin-bottom: 0.6rem;
+            padding-left: 1rem;
+            border-left: 3px solid #b8860b;
+        }
         hr {
             margin: 0.6rem 0;
             border-color: #dec98b;
         }
-
-        .initiative-badge {
-            font-size: 1.6rem;
-            font-weight: bold;
-            background: #1e1710;
-            display: inline-block;
-            padding: 0.2rem 1rem;
-            border-radius: 60px;
-            color: #ffd966;
-        }
-        .action-list {
-            list-style-type: none;
-        }
-        .action-list li {
-            margin-bottom: 0.8rem;
-            padding-left: 1.2rem;
-            border-left: 3px solid #b8860b;
+        button:disabled {
+            opacity: 0.5;
+            transform: none;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- COLONNA SINISTRA: Vitalità, Zaino, Note, e ora STATISTICHE -->
+    <!-- COLONNA SINISTRA (in mobile si impila) -->
     <div>
-        <!-- VITA e modificatori -->
+        <!-- Vitalità & Iniziativa -->
         <div class="card">
             <h2>✨ Vitalità & Iniziativa</h2>
             <div class="stat-block">
                 <div class="flex-row">
                     <div><strong>❤️ Punti Vita</strong><br>
                         <div class="hp-area">
-                            <input type="number" id="currentHp" value="48" step="1" style="width: 80px;"> /
-                            <input type="number" id="maxHp" value="48" step="1" style="width: 80px;">
-                            <span class="badge">Temp ❤️</span>
+                            <input type="number" id="currentHp" value="48" step="1" style="width: 75px;"> /
+                            <input type="number" id="maxHp" value="48" step="1" style="width: 75px;">
+                            <span class="badge">Temp</span>
                             <input type="number" id="tempHp" value="0" step="1" style="width: 70px;">
                         </div>
                     </div>
                     <div><strong>⚡ Iniziativa</strong><br>
                         <span class="initiative-badge" id="initDisplay">+12</span>
-                        <div><small>(DES + INT + Allerta+5)</small></div>
+                        <div><small>(DES + INT + Allerta)</small></div>
                     </div>
                     <div><strong>🧠 Intelligenza</strong><br>
-                        <span class="badge" style="font-size:1.2rem;" id="intModDisplay">20 (+5)</span>
+                        <span class="badge" style="font-size:1.1rem;" id="intModDisplay">20 (+5)</span>
                     </div>
                 </div>
-                <div><strong>🤸 Destrezza:</strong> <span id="dexValDisplay">14 (+2)</span> &nbsp;|&nbsp; <strong>📜 Bonus Competenza:</strong> +3 (stimato)</div>
+                <div class="flex-row" style="margin-top: 0.5rem;">
+                    <span><strong>🛡️ Classe Armatura (CA):</strong> 
+                        <input type="number" id="armorClass" value="12" step="1" style="width: 70px; text-align:center;"> 
+                    </span>
+                    <span><strong>🤸 Destrezza:</strong> <span id="dexValDisplay">14 (+2)</span></span>
+                </div>
             </div>
         </div>
 
-        <!-- STATISTICHE COMPLETE (Forza, Destrezza, Costituzione, Intelligenza, Saggezza, Carisma) modificabili -->
+        <!-- Statistiche Personaggio (Forza, Destrezza, Costituzione, Intelligenza, Saggezza, Carisma) modificabili -->
         <div class="card">
             <h2>⚔️ Statistiche Personaggio</h2>
             <div class="stats-grid" id="abilitiesGrid">
-                <!-- Forza -->
-                <div class="stat-card">
-                    <div class="stat-name">FORZA</div>
-                    <input type="number" id="strScore" value="10" step="1" min="1" max="30">
-                    <div class="stat-mod" id="strMod">+0</div>
-                </div>
-                <!-- Destrezza -->
-                <div class="stat-card">
-                    <div class="stat-name">DESTREZZA</div>
-                    <input type="number" id="dexScore" value="14" step="1" min="1" max="30">
-                    <div class="stat-mod" id="dexMod">+2</div>
-                </div>
-                <!-- Costituzione -->
-                <div class="stat-card">
-                    <div class="stat-name">COSTITUZIONE</div>
-                    <input type="number" id="conScore" value="14" step="1" min="1" max="30">
-                    <div class="stat-mod" id="conMod">+2</div>
-                </div>
-                <!-- Intelligenza -->
-                <div class="stat-card">
-                    <div class="stat-name">INTELLIGENZA</div>
-                    <input type="number" id="intScore" value="20" step="1" min="1" max="30">
-                    <div class="stat-mod" id="intMod">+5</div>
-                </div>
-                <!-- Saggezza -->
-                <div class="stat-card">
-                    <div class="stat-name">SAGGEZZA</div>
-                    <input type="number" id="wisScore" value="12" step="1" min="1" max="30">
-                    <div class="stat-mod" id="wisMod">+1</div>
-                </div>
-                <!-- Carisma -->
-                <div class="stat-card">
-                    <div class="stat-name">CARISMA</div>
-                    <input type="number" id="chaScore" value="10" step="1" min="1" max="30">
-                    <div class="stat-mod" id="chaMod">+0</div>
-                </div>
+                <div class="stat-card"><div class="stat-name">FORZA</div><input type="number" id="strScore" value="10" step="1" min="1" max="30"><div class="stat-mod" id="strMod">+0</div></div>
+                <div class="stat-card"><div class="stat-name">DESTREZZA</div><input type="number" id="dexScore" value="14" step="1" min="1" max="30"><div class="stat-mod" id="dexMod">+2</div></div>
+                <div class="stat-card"><div class="stat-name">COSTITUZIONE</div><input type="number" id="conScore" value="14" step="1" min="1" max="30"><div class="stat-mod" id="conMod">+2</div></div>
+                <div class="stat-card"><div class="stat-name">INTELLIGENZA</div><input type="number" id="intScore" value="20" step="1" min="1" max="30"><div class="stat-mod" id="intMod">+5</div></div>
+                <div class="stat-card"><div class="stat-name">SAGGEZZA</div><input type="number" id="wisScore" value="12" step="1" min="1" max="30"><div class="stat-mod" id="wisMod">+1</div></div>
+                <div class="stat-card"><div class="stat-name">CARISMA</div><input type="number" id="chaScore" value="10" step="1" min="1" max="30"><div class="stat-mod" id="chaMod">+0</div></div>
             </div>
-            <div class="stat-block" style="margin-top: 8px;">
+            <div class="stat-block" style="margin-top: 5px;">
                 <div class="flex-row">
-                    <span><strong>🛡️ Classe Armatura (CA):</strong> <span id="acValue">12</span> (base 10 + DES)</span>
                     <span><strong>🏃 Velocità:</strong> 9 m (30 ft)</span>
-                    <span><strong>🎯 Bonus Tiro Salvezza INT:</strong> +8</span>
+                    <span><strong>🎯 Bonus T.S. INT:</strong> +8</span>
                 </div>
             </div>
-            <small><i>Modifica i valori numerici: i modificatori e la CA si aggiornano in tempo reale.</i></small>
+            <small><i>Modifica i valori: modificatori e iniziativa si aggiornano. La CA ora è indipendente.</i></small>
         </div>
 
-        <!-- ZAINO (Inventario modificabile) -->
+        <!-- ZAINO + MONETE -->
         <div class="card">
-            <h2>🎒 Zaino (Modificabile)</h2>
+            <h2>🎒 Zaino & Monete</h2>
+            <!-- Contatore monete -->
+            <div class="coin-pouch">
+                <div class="coin-row">
+                    <div class="coin-slot"><label>🪙 Oro (mo)</label><input type="number" id="goldCoins" value="125" step="1" min="0"></div>
+                    <div class="coin-slot"><label>🔘 Argento (ma)</label><input type="number" id="silverCoins" value="40" step="1" min="0"></div>
+                    <div class="coin-slot"><label>🟤 Rame (mr)</label><input type="number" id="copperCoins" value="80" step="1" min="0"></div>
+                </div>
+                <div class="coin-row" style="margin-top: 8px;">
+                    <div class="coin-slot"><label>✨ Platino (pp)</label><input type="number" id="platinumCoins" value="5" step="1" min="0"></div>
+                    <div class="coin-slot"><label>⚔️ Electrum (me)</label><input type="number" id="electrumCoins" value="0" step="1" min="0"></div>
+                </div>
+                <small>Modifica i quantitativi, si salvano automaticamente.</small>
+            </div>
+            <!-- Inventario dinamico -->
             <div id="inventoryListContainer">
                 <div id="inventoryItems"></div>
                 <div class="flex-row" style="margin-top: 12px;">
-                    <input type="text" id="newItemName" placeholder="Nuovo oggetto (es. Pergamena, Mazzo di carte)" style="flex:2;">
+                    <input type="text" id="newItemName" placeholder="Nuovo oggetto (es. Pergamena, Mazzo)" style="flex:2;">
                     <button id="addItemBtn">➕ Aggiungi</button>
                 </div>
             </div>
-            <small class="badge" style="margin-top: 8px; display:inline-block;">Clicca 🗑️ per rimuovere</small>
+            <small class="badge" style="margin-top: 6px; display:inline-block;">🗑️ Clicca sull'oggetto per rimuoverlo</small>
         </div>
 
-        <!-- NOTE LIBERE -->
+        <!-- Note Libere -->
         <div class="card">
             <h2>📜 Note Libere</h2>
             <textarea id="freeNotes" class="notes-area" placeholder="Annotazioni, effetti attivi, alleati...">• Mazzo di carte arcano (focus)
@@ -385,49 +396,48 @@
         </div>
     </div>
 
-    <!-- COLONNA DESTRA: Slot incantesimi, risorse speciali, talenti -->
+    <!-- COLONNA DESTRA: incantesimi, talenti, azioni combattimento -->
     <div>
-        <!-- SLOT INCANTESIMI INTERATTIVI -->
+        <!-- Slot incantesimi -->
         <div class="card">
             <h2>🔮 Slot Incantesimi</h2>
-            <p style="font-size:0.85rem;"><i>Clicca + / - per consumare o recuperare slot. Modifica il numero massimo con i pulsanti laterali.</i></p>
+            <p style="font-size:0.8rem;"><i>Clicca +/- per consumare/recuperare. Modifica il massimo con i pulsanti.</i></p>
             <div id="spellSlotsContainer"></div>
-            <div class="flex-row" style="margin-top: 12px;">
-                <button id="resetAllSlots">⟳ Azzera slot usati</button>
-                <button id="longRestBtn">🌙 Riposo Lungo (reset completo)</button>
+            <div class="flex-row" style="margin-top: 10px;">
+                <button id="resetAllSlots">⟳ Azzera usati</button>
+                <button id="longRestBtn">🌙 Riposo Lungo</button>
             </div>
-            <div class="feature-text" style="margin-top: 12px;">
+            <div class="feature-text" style="margin-top: 10px;">
                 <strong>🎴 CARD TRICKS:</strong> Prestidigitazione · Nascondi componenti verbali/somatiche come normale conversazione e maneggio carte.
             </div>
         </div>
 
-        <!-- Hidden Ace + tratti gratuiti Fey Touched -->
+        <!-- Hidden Ace -->
         <div class="card">
             <h2>🃏 Hidden Ace (Cartomancer)</h2>
             <div class="stat-block">
-                <p><strong>✧ Dopo un riposo lungo:</strong> Scegli un incantesimo dalla lista da Mago o Artefice (tempo di lancio 1 azione, slot adeguato). Imbevi in una carta per 8 ore. <strong>Azione bonus</strong> per sfoderare la carta e lanciarlo gratuitamente.</p>
+                <p><strong>✧ Dopo riposo lungo:</strong> Scegli un incantesimo Mago/Artefice (1 azione, slot adeguato). Imbevi in carta per 8h. <strong>Azione bonus</strong> per lanciarlo gratis.</p>
                 <hr>
                 <div class="flex-row">
                     <label><strong>Incantesimo imbevuto:</strong></label>
-                    <input type="text" id="hiddenAceSpell" placeholder="es. Palla di Fuoco, Fiamma Glaciale" style="flex:2;" value="Palla di Fuoco">
-                    <button id="clearAceUsed">✨ Usato / reset uso</button>
+                    <input type="text" id="hiddenAceSpell" placeholder="es. Palla di Fuoco" style="flex:2;" value="Palla di Fuoco">
+                    <button id="clearAceUsed">✨ Usato / reset</button>
                 </div>
-                <div><input type="checkbox" id="aceUsedCheckbox"> <strong>Carta consumata</strong> (dopo l’uso perde effetto; riposo lungo la reimbeve)</div>
-                <small>💡 Puoi cambiare incantesimo dopo ogni riposo lungo.</small>
+                <div><input type="checkbox" id="aceUsedCheckbox"> <strong>Carta consumata</strong> (riposo lungo la reimbeve)</div>
             </div>
         </div>
 
-        <!-- Fey Touched + Silvery Barbs e Misty Step -->
+        <!-- Fey Touched -->
         <div class="card">
             <h2>🍃 Toccato dalle Fate (Fey Touched)</h2>
             <div class="stat-block">
-                <p><strong>INTELLIGENZA → 20</strong> (+1 incluso). Imparì <strong>Misty Step</strong> (2° livello) e <strong>Silvery Barbs</strong> (1° livello, Ammaliamento).</p>
-                <p>🗲 Ciascuno può essere lanciato <strong>una volta gratis per riposo lungo</strong> senza slot. Puoi lanciarli anche con slot normali.</p>
-                <div class="flex-row" style="justify-content:flex-start; gap: 2rem;">
+                <p><strong>INTELLIGENZA → 20</strong> (+1 incluso). Imparì <strong>Misty Step</strong> (2°) e <strong>Silvery Barbs</strong> (1°).</p>
+                <p>🗲 Ciascuno <strong>una volta gratis per riposo lungo</strong> senza slot.</p>
+                <div class="flex-row" style="justify-content:flex-start; gap: 1rem;">
                     <label><input type="checkbox" id="mistyStepFreeUsed"> Misty Step (gratis usato)</label>
-                    <label><input type="checkbox" id="silveryBarbsFreeUsed"> Silvery Barbs (gratis usato)</label>
+                    <label><input type="checkbox" id="silveryBarbsFreeUsed"> Silvery Barbs (gratis)</label>
                 </div>
-                <button id="resetFeyTouched" style="margin-top: 6px;">⟳ Reset usi gratuiti (riposo breve/lungo)</button>
+                <button id="resetFeyTouched" style="margin-top: 6px;">⟳ Reset usi gratuiti</button>
             </div>
         </div>
 
@@ -435,289 +445,224 @@
         <div class="card">
             <h2>⚔️ Allerta (Alert)</h2>
             <div class="feature-text">
-                ✔ <strong>Iniziativa +5</strong> (già incluso nel +12 totale)<br>
-                ✔ Impossibile essere <strong>sorpresi</strong> se cosciente.<br>
-                ✔ Creature che non vedi <strong>non ottengono vantaggio</strong> sugli attacchi contro di te.
+                ✔ <strong>Iniziativa +5</strong> (già incluso)<br>
+                ✔ Non puoi essere <strong>sorpreso</strong> se cosciente.<br>
+                ✔ Creature che non vedi <strong>non hanno vantaggio</strong> sugli attacchi.
             </div>
         </div>
     </div>
 
-    <!-- SEZIONE FULL-WIDTH: descrizioni originali dei talenti -->
+    <!-- SEZIONE FULL-WIDTH: descrizioni originali talenti + Azioni combattimento -->
     <div class="full-width card">
-        <h2>📖 Tratti & Talentu (descrizioni originali)</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1rem;">
-            <div>
-                <h3>🃏 Cartomancer (The Book of Many Things)</h3>
-                <div class="feature-text">
-                    <strong>Focus da incantatore:</strong> puoi usare un mazzo di carte come focus.<br>
-                    <strong>CARD TRICKS:</strong> Prestidigitazione gratuita. Puoi nascondere componenti verbali/somatiche come conversazione e maneggio carte.<br>
-                    <strong>HIDDEN ACE:</strong> dopo ogni riposo lungo, scegli un incantesimo dalla lista da Mago/Artefice (anche se non preparato) con tempo di lancio 1 azione e slot adeguato. La carta rimane attiva 8 ore. Azione bonus per lanciare l'incantesimo.
-                </div>
-            </div>
-            <div>
-                <h3>🧚 Toccato dalle Fate (Fey Touched)</h3>
-                <div class="feature-text">
-                    +1 Intelligenza (totale 20).<br>
-                    Imparì <strong>Misty Step</strong> e <strong>Silvery Barbs</strong> (sempre preparati).<br>
-                    Ogni incantesimo può essere lanciato una volta per riposo lungo senza consumare slot. Utilizzi Intelligenza come caratteristica da incantatore.
-                </div>
-            </div>
-            <div>
-                <h3>👁️ Allerta (Alert) - PHB</h3>
-                <div class="feature-text">
-                    +5 ai tiri di iniziativa. Non puoi essere sorpreso. I nemici che non puoi vedere non ottengono vantaggio sugli attacchi contro di te.
-                </div>
-            </div>
+        <h2>📖 Descrizioni originali Talenti</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 1rem;">
+            <div class="feature-text"><strong>🃏 Cartomancer:</strong> Mazzo come focus. Card Tricks: Prestidigitazione e nascondere componenti. Hidden Ace: azione bonus per lanciare incantesimo imbevuto.</div>
+            <div class="feature-text"><strong>🧚 Fey Touched:</strong> +1 INT (tot.20). Misty Step e Silvery Barbs sempre preparati, un uso gratuito ciascuno per riposo lungo.</div>
+            <div class="feature-text"><strong>👁️ Alert:</strong> +5 iniziativa, immunità a sorpresa, nessun vantaggio da nascosti contro di te.</div>
         </div>
     </div>
 
-    <!-- NUOVA SEZIONE: AZIONI IN COMBATTIMENTO (spiegazione dettagliata) -->
     <div class="full-width card">
-        <h2>⚔️ AZIONI IN COMBATTIMENTO</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.2rem;">
-            <div class="feature-text" style="background: #f8efdf;">
+        <h2>⚔️ AZIONI IN COMBATTIMENTO (riepilogo tattico)</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1rem;">
+            <div class="feature-text">
                 <h3 style="margin-top:0;">🎴 Azione Standard</h3>
-                <ul class="action-list">
-                    <li><strong>🔮 Lanciare un incantesimo</strong> (es. Palla di Fuoco, Silvery Barbs, ecc.) usando uno slot o gli usi gratuiti di Fey Touched.</li>
-                    <li><strong>📜 Utilizzare Hidden Ace</strong> (azione bonus, non standard – vedi sotto).</li>
-                    <li><strong>🗡️ Attacco con arma semplice</strong> (pugnale, dardo, mazza: bonus +2/4).</li>
-                    <li><strong>Aiutare, Schivare, Ritirarsi, Usare Oggetto</strong> (azioni standard D&D).</li>
-                </ul>
+                <ul class="action-list"><li>Lanciare un incantesimo (slot o usi gratuiti Fey Touched)</li><li>Attacco con arma semplice</li><li>Schivare, Aiutare, Usare oggetto</li></ul>
             </div>
-            <div class="feature-text" style="background: #f8efdf;">
+            <div class="feature-text">
                 <h3 style="margin-top:0;">🌀 Azione Bonus</h3>
-                <ul class="action-list">
-                    <li><strong>🃏 Hidden Ace:</strong> sfoderare la carta imbevuta e lanciare l'incantesimo (gratuito, senza slot).</li>
-                    <li><strong>✨ Misty Step (teletrasporto)</strong> – se usi la versione gratuita o con slot, è sempre azione bonus.</li>
-                    <li><strong>🎴 Prestidigitazione (trucchetto)</strong> – effetti minori ma creativi, nascondendo componenti.</li>
-                </ul>
+                <ul class="action-list"><li><strong>Hidden Ace</strong> – sfoderare carta e lanciare incantesimo</li><li><strong>Misty Step</strong> (teletrasporto)</li><li>Prestidigitazione</li></ul>
             </div>
-            <div class="feature-text" style="background: #f8efdf;">
+            <div class="feature-text">
                 <h3 style="margin-top:0;">⚡ Reazione</h3>
-                <ul class="action-list">
-                    <li><strong>Silvery Barbs</strong> (obbliga una creatura a ritirare un tiro e concede vantaggio a un alleato).</li>
-                    <li><strong>Attacco di opportunità</strong> (se hai un'arma corpo a corpo).</li>
-                </ul>
+                <ul class="action-list"><li><strong>Silvery Barbs</strong> (obbliga a ritirare un tiro)</li><li>Attacco di opportunità</li></ul>
             </div>
-            <div class="feature-text" style="background: #f8efdf;">
-                <h3 style="margin-top:0;">🎭 Tattiche speciali da Cartomancer</h3>
-                <ul class="action-list">
-                    <li><strong>Nascondere componenti:</strong> I tuoi incantesimi sembrano semplice conversazione e giochi di carte – <strong>difficili da contrastare</strong> e da riconoscere.</li>
-                    <li><strong>Mazzo come focus:</strong> Non hai bisogno di una borsa componenti, le tue carte sostituiscono i materiali.</li>
-                    <li><strong>Iniziativa +12:</strong> Spesso agisci per primo, puoi lanciare controllo o difesa prima dei nemici.</li>
-                </ul>
+            <div class="feature-text">
+                <h3 style="margin-top:0;">🎭 Tattiche da Cartomancer</h3>
+                <ul class="action-list"><li>Incantesimi sembrano conversazione + carte – difficili da contrastare</li><li>Mazzo come focus, nessuna borsa componenti</li><li>Iniziativa elevata (+12 tipica)</li></ul>
             </div>
         </div>
-        <div class="stat-block" style="margin-top: 1rem;">
-            <p><strong>💡 Esempio di turno efficace:</strong> Azione standard → lanciare <em>Silvery Barbs</em> per proteggere un alleato; Azione Bonus → Misty Step per posizionarti; Reazione → un secondo Silvery Barbs se necessario. Oppure: Azione standard per un incantesimo potente, Azione Bonus per sfoderare Hidden Ace e lanciare un altro incantesimo imbevuto.</p>
-            <p><strong>🎴 Nota su Prestidigitazione:</strong> Puoi creare effetti sensoriali, scaldare/raffreddare, pulire o sporcare, il tutto mentre giochi distrattamente con le carte, senza destare sospetti.</p>
+        <div class="stat-block" style="margin-top: 0.8rem;">
+            <p><strong>💡 Esempio di turno:</strong> Azione → <em>Palla di Fuoco</em>; Azione Bonus → Hidden Ace (altro incantesimo); Reazione → Silvery Barbs per proteggere alleato.</p>
         </div>
     </div>
 </div>
 
 <script>
-    // -------------------- GESTIONE INVENTARIO DINAMICO --------------------
-    let inventoryItems = ["Mazzo di carte arcane","Libro degli incantesimi","Pergamena di Silvery Barbs","Dadi da gioco","Carta di Hidden Ace (vuota)"];
-
-    function renderInventory() {
-        const container = document.getElementById('inventoryItems');
-        if (!container) return;
-        container.innerHTML = '';
-        inventoryItems.forEach((item, idx) => {
-            const div = document.createElement('div');
-            div.className = 'inventory-item';
-            div.innerHTML = `
-                <span style="word-break:break-word;">📦 ${escapeHtml(item)}</span>
-                <button class="removeItemBtn" data-index="${idx}" style="background:#b65c2e; color:white;">🗑️ Rimuovi</button>
-            `;
-            container.appendChild(div);
-        });
-        document.querySelectorAll('.removeItemBtn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const index = parseInt(btn.getAttribute('data-index'), 10);
-                if (!isNaN(index)) {
-                    inventoryItems.splice(index, 1);
-                    renderInventory();
-                    saveInventoryToLocal();
-                }
-            });
-        });
-    }
-
-    document.getElementById('addItemBtn')?.addEventListener('click', () => {
-        const input = document.getElementById('newItemName');
-        const newName = input.value.trim();
-        if (newName) {
-            inventoryItems.push(newName);
-            renderInventory();
-            input.value = '';
-            saveInventoryToLocal();
-        } else {
-            alert("Inserisci il nome dell'oggetto");
-        }
-    });
-
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        });
-    }
-
-    // -------------------- STATISTICHE DINAMICHE + AGGIORNAMENTO --------------------
+    // -------------------- 1. STATISTICHE (Forza, Dex, ecc) + CALCOLO INIZIATIVA (CA ora manuale) --------------------
     function calcMod(score) { return Math.floor((score - 10) / 2); }
     function updateAbilities() {
-        const strVal = parseInt(document.getElementById('strScore').value, 10) || 10;
-        const dexVal = parseInt(document.getElementById('dexScore').value, 10) || 10;
-        const conVal = parseInt(document.getElementById('conScore').value, 10) || 10;
-        const intVal = parseInt(document.getElementById('intScore').value, 10) || 10;
-        const wisVal = parseInt(document.getElementById('wisScore').value, 10) || 10;
-        const chaVal = parseInt(document.getElementById('chaScore').value, 10) || 10;
-        
-        document.getElementById('strMod').innerText = (calcMod(strVal) >= 0 ? '+' : '') + calcMod(strVal);
-        document.getElementById('dexMod').innerText = (calcMod(dexVal) >= 0 ? '+' : '') + calcMod(dexVal);
-        document.getElementById('conMod').innerText = (calcMod(conVal) >= 0 ? '+' : '') + calcMod(conVal);
-        document.getElementById('intMod').innerText = (calcMod(intVal) >= 0 ? '+' : '') + calcMod(intVal);
-        document.getElementById('wisMod').innerText = (calcMod(wisVal) >= 0 ? '+' : '') + calcMod(wisVal);
-        document.getElementById('chaMod').innerText = (calcMod(chaVal) >= 0 ? '+' : '') + calcMod(chaVal);
-        
-        // Aggiorna visuale destrezza e intelligenza nella sezione vitalità
-        document.getElementById('dexValDisplay').innerHTML = `${dexVal} (${calcMod(dexVal) >= 0 ? '+' : ''}${calcMod(dexVal)})`;
-        document.getElementById('intModDisplay').innerHTML = `${intVal} (${calcMod(intVal) >= 0 ? '+' : ''}${calcMod(intVal)})`;
-        
-        // CA: 10 + mod destrezza
-        const ac = 10 + calcMod(dexVal);
-        document.getElementById('acValue').innerText = ac;
-        
-        // Iniziativa: DES mod + INT mod + 5 (Alert)
-        const initTotal = calcMod(dexVal) + calcMod(intVal) + 5;
-        document.getElementById('initDisplay').innerHTML = (initTotal >= 0 ? '+' : '') + initTotal;
-        
-        // salva in localStorage
-        const stats = { str: strVal, dex: dexVal, con: conVal, int: intVal, wis: wisVal, cha: chaVal };
+        const str = parseInt(document.getElementById('strScore').value) || 10;
+        const dex = parseInt(document.getElementById('dexScore').value) || 10;
+        const con = parseInt(document.getElementById('conScore').value) || 10;
+        const int = parseInt(document.getElementById('intScore').value) || 10;
+        const wis = parseInt(document.getElementById('wisScore').value) || 10;
+        const cha = parseInt(document.getElementById('chaScore').value) || 10;
+        document.getElementById('strMod').innerText = (calcMod(str)>=0?'+':'')+calcMod(str);
+        document.getElementById('dexMod').innerText = (calcMod(dex)>=0?'+':'')+calcMod(dex);
+        document.getElementById('conMod').innerText = (calcMod(con)>=0?'+':'')+calcMod(con);
+        document.getElementById('intMod').innerText = (calcMod(int)>=0?'+':'')+calcMod(int);
+        document.getElementById('wisMod').innerText = (calcMod(wis)>=0?'+':'')+calcMod(wis);
+        document.getElementById('chaMod').innerText = (calcMod(cha)>=0?'+':'')+calcMod(cha);
+        document.getElementById('dexValDisplay').innerHTML = `${dex} (${calcMod(dex)>=0?'+':''}${calcMod(dex)})`;
+        document.getElementById('intModDisplay').innerHTML = `${int} (${calcMod(int)>=0?'+':''}${calcMod(int)})`;
+        // Iniziativa: mod DES + mod INT +5 (Alert)
+        const init = calcMod(dex) + calcMod(int) + 5;
+        document.getElementById('initDisplay').innerHTML = (init>=0?'+':'')+init;
+        // Salva in localStorage
+        const stats = { str, dex, con, int, wis, cha };
         localStorage.setItem('characterStats', JSON.stringify(stats));
     }
-    
-    // carica statistiche da localstorage
-    function loadStatsFromLocal() {
+    // Carica statistiche
+    function loadStats() {
         const saved = localStorage.getItem('characterStats');
-        if (saved) {
+        if(saved) {
             try {
                 const s = JSON.parse(saved);
-                if (s.str) document.getElementById('strScore').value = s.str;
-                if (s.dex) document.getElementById('dexScore').value = s.dex;
-                if (s.con) document.getElementById('conScore').value = s.con;
-                if (s.int) document.getElementById('intScore').value = s.int;
-                if (s.wis) document.getElementById('wisScore').value = s.wis;
-                if (s.cha) document.getElementById('chaScore').value = s.cha;
+                if(s.str) document.getElementById('strScore').value = s.str;
+                if(s.dex) document.getElementById('dexScore').value = s.dex;
+                if(s.con) document.getElementById('conScore').value = s.con;
+                if(s.int) document.getElementById('intScore').value = s.int;
+                if(s.wis) document.getElementById('wisScore').value = s.wis;
+                if(s.cha) document.getElementById('chaScore').value = s.cha;
             } catch(e) {}
         }
         updateAbilities();
     }
-    
-    // eventi statistiche
-    const statInputs = ['strScore', 'dexScore', 'conScore', 'intScore', 'wisScore', 'chaScore'];
-    statInputs.forEach(id => {
-        document.getElementById(id).addEventListener('input', updateAbilities);
+    // CA manuale: salvataggio e load
+    function saveCA() {
+        const ca = document.getElementById('armorClass').value;
+        localStorage.setItem('armorClass', ca);
+    }
+    function loadCA() {
+        const saved = localStorage.getItem('armorClass');
+        if(saved) document.getElementById('armorClass').value = saved;
+        else document.getElementById('armorClass').value = 12;
+    }
+    // -------------------- 2. INVENTARIO + MONETE --------------------
+    let inventoryItems = ["Mazzo di carte arcane","Libro degli incantesimi","Pergamena di Silvery Barbs","Dadi da gioco"];
+    function renderInventory() {
+        const container = document.getElementById('inventoryItems');
+        if(!container) return;
+        container.innerHTML = '';
+        inventoryItems.forEach((item, idx) => {
+            const div = document.createElement('div');
+            div.className = 'inventory-item';
+            div.innerHTML = `<span>📦 ${escapeHtml(item)}</span><button class="removeItemBtn" data-index="${idx}" style="background:#b65c2e; color:white;">🗑️</button>`;
+            container.appendChild(div);
+        });
+        document.querySelectorAll('.removeItemBtn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-index'),10);
+                inventoryItems.splice(idx,1);
+                renderInventory();
+                saveInventory();
+            });
+        });
+    }
+    function saveInventory() { localStorage.setItem('carto_inventory', JSON.stringify(inventoryItems)); }
+    function loadInventory() {
+        const stored = localStorage.getItem('carto_inventory');
+        if(stored) { try { inventoryItems = JSON.parse(stored); if(!Array.isArray(inventoryItems)) inventoryItems=[]; renderInventory(); } catch(e){} }
+        else renderInventory();
+    }
+    document.getElementById('addItemBtn')?.addEventListener('click', () => {
+        const input = document.getElementById('newItemName');
+        const val = input.value.trim();
+        if(val) { inventoryItems.push(val); renderInventory(); saveInventory(); input.value=''; }
+        else alert("Inserisci nome oggetto");
     });
+    // Monete
+    function saveCoins() {
+        const gold = document.getElementById('goldCoins').value;
+        const silver = document.getElementById('silverCoins').value;
+        const copper = document.getElementById('copperCoins').value;
+        const platinum = document.getElementById('platinumCoins').value;
+        const electrum = document.getElementById('electrumCoins').value;
+        localStorage.setItem('playerCoins', JSON.stringify({gold, silver, copper, platinum, electrum}));
+    }
+    function loadCoins() {
+        const saved = localStorage.getItem('playerCoins');
+        if(saved) {
+            try {
+                const c = JSON.parse(saved);
+                if(c.gold) document.getElementById('goldCoins').value = c.gold;
+                if(c.silver) document.getElementById('silverCoins').value = c.silver;
+                if(c.copper) document.getElementById('copperCoins').value = c.copper;
+                if(c.platinum) document.getElementById('platinumCoins').value = c.platinum;
+                if(c.electrum) document.getElementById('electrumCoins').value = c.electrum;
+            } catch(e) {}
+        }
+    }
+    const coinInputs = ['goldCoins','silverCoins','copperCoins','platinumCoins','electrumCoins'];
+    coinInputs.forEach(id => { document.getElementById(id)?.addEventListener('input', saveCoins); });
     
-    // -------------------- GESTIONE SLOT INCANTESIMI --------------------
+    // -------------------- 3. SLOT INCANTESIMI --------------------
     let spellLevels = [
-        { level: 1, max: 4, used: 0 },
-        { level: 2, max: 3, used: 0 },
-        { level: 3, max: 3, used: 0 },
-        { level: 4, max: 2, used: 0 },
-        { level: 5, max: 1, used: 0 }
+        { level:1, max:4, used:0 }, { level:2, max:3, used:0 }, { level:3, max:3, used:0 },
+        { level:4, max:2, used:0 }, { level:5, max:1, used:0 }
     ];
-
     function renderSpellSlots() {
         const container = document.getElementById('spellSlotsContainer');
-        if (!container) return;
+        if(!container) return;
         container.innerHTML = '';
-        for (let i = 0; i < spellLevels.length; i++) {
-            const sl = spellLevels[i];
-            const levelDiv = document.createElement('div');
-            levelDiv.className = 'slot-level';
-            levelDiv.innerHTML = `
-                <div style="min-width: 90px;"><strong>Livello ${sl.level}</strong></div>
+        spellLevels.forEach((sl, i) => {
+            const div = document.createElement('div');
+            div.className = 'slot-level';
+            div.innerHTML = `
+                <div><strong>Livello ${sl.level}</strong></div>
                 <div class="slot-controls">
-                    <button class="decUsed" data-levelidx="${i}" ${sl.used <= 0 ? 'disabled' : ''}>-1 usato</button>
+                    <button class="decUsed" data-idx="${i}" ${sl.used<=0?'disabled':''}>-1 usato</button>
                     <span class="used-counter">${sl.used} / ${sl.max}</span>
-                    <button class="incUsed" data-levelidx="${i}" ${sl.used >= sl.max ? 'disabled' : ''}>+1 usato</button>
-                    <button class="resetUsedLevel" data-levelidx="${i}" style="background:#a7a07b;">↺ azzera</button>
+                    <button class="incUsed" data-idx="${i}" ${sl.used>=sl.max?'disabled':''}>+1 usato</button>
+                    <button class="resetUsedLevel" data-idx="${i}">↺ azzera</button>
                 </div>
                 <div class="slot-controls">
-                    <button class="decMax" data-levelidx="${i}" ${sl.max <= 0 ? 'disabled' : ''}>⬇️ Max-1</button>
-                    <span style="font-weight:bold;">Max: ${sl.max}</span>
-                    <button class="incMax" data-levelidx="${i}">⬆️ Max+1</button>
+                    <button class="decMax" data-idx="${i}" ${sl.max<=0?'disabled':''}>⬇️ Max-1</button>
+                    <span>Max: ${sl.max}</span>
+                    <button class="incMax" data-idx="${i}">⬆️ Max+1</button>
                 </div>
             `;
-            container.appendChild(levelDiv);
-        }
+            container.appendChild(div);
+        });
         attachSlotEvents();
         saveSpellData();
     }
-    
     function attachSlotEvents() {
-        document.querySelectorAll('.decUsed').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-                if (spellLevels[idx].used > 0) { spellLevels[idx].used--; renderSpellSlots(); }
-            });
-        });
-        document.querySelectorAll('.incUsed').forEach(btn => {
-            const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-            btn.addEventListener('click', () => { if (spellLevels[idx].used < spellLevels[idx].max) { spellLevels[idx].used++; renderSpellSlots(); } });
-        });
-        document.querySelectorAll('.resetUsedLevel').forEach(btn => {
-            const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-            btn.addEventListener('click', () => { spellLevels[idx].used = 0; renderSpellSlots(); });
-        });
-        document.querySelectorAll('.decMax').forEach(btn => {
-            const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-            btn.addEventListener('click', () => { if(spellLevels[idx].max>0){ spellLevels[idx].max--; if(spellLevels[idx].used>spellLevels[idx].max) spellLevels[idx].used=spellLevels[idx].max; renderSpellSlots(); } });
-        });
-        document.querySelectorAll('.incMax').forEach(btn => {
-            const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
-            btn.addEventListener('click', () => { spellLevels[idx].max++; renderSpellSlots(); });
-        });
+        document.querySelectorAll('.decUsed').forEach(btn => btn.addEventListener('click',()=>{let i=btn.dataset.idx; if(spellLevels[i].used>0){spellLevels[i].used--; renderSpellSlots();}}));
+        document.querySelectorAll('.incUsed').forEach(btn => btn.addEventListener('click',()=>{let i=btn.dataset.idx; if(spellLevels[i].used<spellLevels[i].max){spellLevels[i].used++; renderSpellSlots();}}));
+        document.querySelectorAll('.resetUsedLevel').forEach(btn => btn.addEventListener('click',()=>{let i=btn.dataset.idx; spellLevels[i].used=0; renderSpellSlots();}));
+        document.querySelectorAll('.decMax').forEach(btn => btn.addEventListener('click',()=>{let i=btn.dataset.idx; if(spellLevels[i].max>0){spellLevels[i].max--; if(spellLevels[i].used>spellLevels[i].max)spellLevels[i].used=spellLevels[i].max; renderSpellSlots();}}));
+        document.querySelectorAll('.incMax').forEach(btn => btn.addEventListener('click',()=>{let i=btn.dataset.idx; spellLevels[i].max++; renderSpellSlots();}));
     }
-    
-    function resetAllSpellUsed() { spellLevels.forEach(s => s.used = 0); renderSpellSlots(); }
-    function saveSpellData() { localStorage.setItem('spellSlotsData', JSON.stringify(spellLevels.map(l=>({max:l.max, used:l.used})))); }
+    function saveSpellData() { localStorage.setItem('spellSlotsData', JSON.stringify(spellLevels.map(s=>({max:s.max, used:s.used})))); }
     function loadSpellData() {
         const raw = localStorage.getItem('spellSlotsData');
         if(raw) { try { const saved = JSON.parse(raw); if(saved.length===spellLevels.length) saved.forEach((s,i)=>{ spellLevels[i].max=s.max; spellLevels[i].used=s.used; }); renderSpellSlots(); } catch(e){} }
+        else renderSpellSlots();
     }
+    function resetAllSpellUsed() { spellLevels.forEach(s=>s.used=0); renderSpellSlots(); }
     
+    // Riposo lungo: resetta PF, temp, slot, fey touched, hidden ace
     function performLongRest() {
-        const maxHp = parseInt(document.getElementById('maxHp').value,10);
-        document.getElementById('currentHp').value = isNaN(maxHp)?0:maxHp;
+        const maxHp = parseInt(document.getElementById('maxHp').value) || 0;
+        document.getElementById('currentHp').value = maxHp;
         document.getElementById('tempHp').value = 0;
         resetAllSpellUsed();
         document.getElementById('mistyStepFreeUsed').checked = false;
         document.getElementById('silveryBarbsFreeUsed').checked = false;
         document.getElementById('aceUsedCheckbox').checked = false;
         localStorage.setItem('mistyUsed','false'); localStorage.setItem('silveryUsed','false'); localStorage.setItem('aceUsedFlag','false');
-        alert("🌙 Riposo lungo completato! PF, slot, usi gratuiti e carta Hidden Ace rigenerati.");
+        alert("🌙 Riposo lungo completato! PF, slot incantesimi, usi Fey Touched e carta Hidden Ace rigenerati.");
     }
-    function resetFeyTouchedOnly() { document.getElementById('mistyStepFreeUsed').checked=false; document.getElementById('silveryBarbsFreeUsed').checked=false; localStorage.setItem('mistyUsed','false'); localStorage.setItem('silveryUsed','false'); }
-    function resetHiddenAceUsed() { document.getElementById('aceUsedCheckbox').checked=false; localStorage.setItem('aceUsedFlag','false'); }
+    function resetFeyTouched() { document.getElementById('mistyStepFreeUsed').checked=false; document.getElementById('silveryBarbsFreeUsed').checked=false; localStorage.setItem('mistyUsed','false'); localStorage.setItem('silveryUsed','false'); }
+    function resetHiddenAce() { document.getElementById('aceUsedCheckbox').checked=false; localStorage.setItem('aceUsedFlag','false'); }
     
-    function saveInventoryToLocal() { localStorage.setItem('carto_inventory', JSON.stringify(inventoryItems)); }
-    function loadInventory() {
-        const stored = localStorage.getItem('carto_inventory');
-        if(stored) { try { inventoryItems = JSON.parse(stored); if(!Array.isArray(inventoryItems)) inventoryItems=[]; renderInventory(); } catch(e){} }
-        else renderInventory();
-    }
-    
-    // persistenza flag e note
+    // Persistenza varie
     function loadMisc() {
-        const freeNotes = document.getElementById('freeNotes');
-        if(localStorage.getItem('carto_notes')) freeNotes.value = localStorage.getItem('carto_notes');
-        freeNotes.addEventListener('input', () => localStorage.setItem('carto_notes', freeNotes.value));
+        const notes = document.getElementById('freeNotes');
+        if(localStorage.getItem('carto_notes')) notes.value = localStorage.getItem('carto_notes');
+        notes.addEventListener('input',()=>localStorage.setItem('carto_notes', notes.value));
         const hiddenSpell = document.getElementById('hiddenAceSpell');
         if(localStorage.getItem('hiddenAceSpellStore')) hiddenSpell.value = localStorage.getItem('hiddenAceSpellStore');
         hiddenSpell.addEventListener('input',()=>localStorage.setItem('hiddenAceSpellStore', hiddenSpell.value));
@@ -739,15 +684,23 @@
         tempHp.addEventListener('change',()=>localStorage.setItem('hp_temp', tempHp.value));
     }
     
-    // inizializzazione
-    loadStatsFromLocal();
+    function escapeHtml(s) { return s.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    
+    // Inizializzazione completa
+    loadStats();
+    loadCA();
     loadInventory();
+    loadCoins();
     loadSpellData();
     loadMisc();
     document.getElementById('resetAllSlots')?.addEventListener('click', resetAllSpellUsed);
     document.getElementById('longRestBtn')?.addEventListener('click', performLongRest);
-    document.getElementById('resetFeyTouched')?.addEventListener('click', resetFeyTouchedOnly);
-    document.getElementById('clearAceUsed')?.addEventListener('click', resetHiddenAceUsed);
+    document.getElementById('resetFeyTouched')?.addEventListener('click', resetFeyTouched);
+    document.getElementById('clearAceUsed')?.addEventListener('click', resetHiddenAce);
+    document.getElementById('armorClass')?.addEventListener('change', saveCA);
+    // ascolta cambi statistiche per iniziativa
+    const statIds = ['strScore','dexScore','conScore','intScore','wisScore','chaScore'];
+    statIds.forEach(id => document.getElementById(id).addEventListener('input', updateAbilities));
 </script>
 </body>
 </html>
