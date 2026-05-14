@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Scheda Personaggio - Cartomancer Arcano</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #2a2418;
+            font-family: 'Segoe UI', 'Garamond', 'Georgia', serif;
+            padding: 2rem 1.5rem;
+            color: #f2e8d5;
+        }
+
+        /* contenitore principale a 2 colonne flessibile */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            align-items: start;
+        }
+
+        /* stile card generale */
+        .card {
+            background: #fff7ef;
+            background-image: radial-gradient(circle at 25% 40%, rgba(200, 170, 120, 0.05) 2%, transparent 2.5%);
+            background-size: 24px 24px;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 245, 215, 0.8);
+            padding: 1.4rem 1.6rem;
+            margin-bottom: 1.8rem;
+            border: 1px solid #e6d5b3;
+            transition: all 0.1s ease;
+            color: #2c241a;
+        }
+
+        .card h2 {
+            font-family: 'Cinema', 'Georgia', serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            border-left: 8px solid #b8860b;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+            color: #4a2e1e;
+            letter-spacing: -0.3px;
+            text-shadow: 1px 1px 0 rgba(255,235,190,0.6);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0.8rem 0 0.6rem 0;
+            color: #6b3f1c;
+            border-bottom: 2px dotted #dec27a;
+            display: inline-block;
+        }
+
+        .stat-block {
+            background: #f7f0e2;
+            border-radius: 20px;
+            padding: 0.8rem 1rem;
+            margin: 0.6rem 0;
+            box-shadow: inset 0 0 0 1px #fdf7ed, 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hp-area {
+            display: flex;
+            gap: 1rem;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        .hp-box {
+            background: #2e241f;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            color: #fadfaf;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            background: #fffcf5;
+            border: 1px solid #cbad7a;
+            border-radius: 32px;
+            padding: 0.4rem 0.8rem;
+            font-family: inherit;
+            font-size: 1rem;
+            color: #1f1b14;
+            font-weight: 500;
+            transition: 0.1s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #b56a1c;
+            box-shadow: 0 0 0 2px rgba(181,106,28,0.3);
+        }
+
+        button {
+            background: #cfb27c;
+            border: none;
+            border-radius: 32px;
+            padding: 0.3rem 0.9rem;
+            font-weight: bold;
+            font-family: inherit;
+            color: #281e12;
+            cursor: pointer;
+            transition: 0.1s linear;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background: #c09a5c;
+            transform: scale(0.97);
+            color: white;
+        }
+
+        .slot-group {
+            background: #efe2cf;
+            border-radius: 20px;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .slot-level {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 0.6rem 0;
+            border-bottom: 1px solid #d6c29d;
+            padding-bottom: 0.5rem;
+        }
+
+        .slot-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            background: #fcf5e8;
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+        }
+
+        .used-counter {
+            min-width: 45px;
+            text-align: center;
+            font-weight: bold;
+            background: #4c351e;
+            color: #ffecb3;
+            padding: 0.2rem 0.5rem;
+            border-radius: 24px;
+        }
+
+        .inventory-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fcf5ea;
+            margin: 0.5rem 0;
+            padding: 0.3rem 0.6rem;
+            border-radius: 30px;
+            border-left: 5px solid #b8860b;
+        }
+
+        .badge {
+            background: #2e241f;
+            color: #f3dba6;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .notes-area {
+            width: 100%;
+            min-height: 100px;
+            margin-top: 0.5rem;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .feature-text {
+            font-size: 0.95rem;
+            line-height: 1.45;
+            background: #fdf3e4;
+            padding: 0.8rem 1rem;
+            border-radius: 24px;
+            margin-top: 0.5rem;
+            border-left: 4px solid #b67b2e;
+        }
+
+        @media (max-width: 880px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .full-width {
+                grid-column: span 1;
+            }
+            body {
+                padding: 1rem;
+            }
+        }
+
+        hr {
+            margin: 0.6rem 0;
+            border-color: #dec98b;
+        }
+
+        .initiative-badge {
+            font-size: 1.6rem;
+            font-weight: bold;
+            background: #1e1710;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            color: #ffd966;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- COLONNA SINISTRA: Statistiche vitali, inventario, note -->
+    <div>
+        <!-- VITA e modificatori principali -->
+        <div class="card">
+            <h2>✨ Vitalità & Iniziativa</h2>
+            <div class="stat-block">
+                <div class="flex-row">
+                    <div><strong>❤️ Punti Vita</strong><br>
+                        <div class="hp-area">
+                            <input type="number" id="currentHp" value="48" step="1" style="width: 80px;"> /
+                            <input type="number" id="maxHp" value="48" step="1" style="width: 80px;">
+                            <span class="badge">Temp ❤️</span>
+                            <input type="number" id="tempHp" value="0" step="1" style="width: 70px;">
+                        </div>
+                    </div>
+                    <div><strong>⚡ Iniziativa</strong><br>
+                        <span class="initiative-badge">+12</span>
+                        <div><small>(DES +2 · INT +5 · Allerta +5)</small></div>
+                    </div>
+                    <div><strong>🧠 Intelligenza</strong><br>
+                        <span class="badge" style="font-size:1.2rem;">20 (+5)</span>
+                    </div>
+                </div>
+                <div><strong>🤸 Destrezza:</strong> 14 (+2) &nbsp;|&nbsp; <strong>📜 Bonus Tiri Salvezza:</strong> INT +8 (stima)</div>
+            </div>
+        </div>
+
+        <!-- ZAINO (Inventario modificabile) -->
+        <div class="card">
+            <h2>🎒 Zaino (Modificabile)</h2>
+            <div id="inventoryListContainer">
+                <div id="inventoryItems"></div>
+                <div class="flex-row" style="margin-top: 12px;">
+                    <input type="text" id="newItemName" placeholder="Nuovo oggetto (es. Pergamena, Mazzo di carte)" style="flex:2;">
+                    <button id="addItemBtn">➕ Aggiungi</button>
+                </div>
+            </div>
+            <small class="badge" style="margin-top: 8px; display:inline-block;">Clicca 🗑️ per rimuovere</small>
+        </div>
+
+        <!-- NOTE LIBERE -->
+        <div class="card">
+            <h2>📜 Note Libere</h2>
+            <textarea id="freeNotes" class="notes-area" placeholder="Annotazioni, effetti attivi, alleati...">• Mazzo di carte arcano (focus)
+• Carta di Hidden Ace attiva?</textarea>
+        </div>
+    </div>
+
+    <!-- COLONNA DESTRA: Slot incantesimi, risorse speciali -->
+    <div>
+        <!-- SLOT INCANTESIMI INTERATTIVI (indicatori) -->
+        <div class="card">
+            <h2>🔮 Slot Incantesimi</h2>
+            <p style="font-size:0.85rem;"><i>Clicca + / - per consumare o recuperare slot. Modifica il numero massimo con i pulsanti laterali.</i></p>
+            <div id="spellSlotsContainer"></div>
+            <div class="flex-row" style="margin-top: 12px;">
+                <button id="resetAllSlots">⟳ Azzera slot usati</button>
+                <button id="longRestBtn">🌙 Riposo Lungo (reset completo)</button>
+            </div>
+            <div class="feature-text" style="margin-top: 12px;">
+                <strong>🎴 CARD TRICKS:</strong> Prestidigitazione · Nascondi componenti verbali/somatiche come normale conversazione e maneggio carte.
+            </div>
+        </div>
+
+        <!-- Hidden Ace + tratti gratuiti Fey Touched -->
+        <div class="card">
+            <h2>🃏 Hidden Ace (Cartomancer)</h2>
+            <div class="stat-block">
+                <p><strong>✧ Dopo un riposo lungo:</strong> Scegli un incantesimo dalla lista da Mago o Artefice (tempo di lancio 1 azione, slot adeguato). Imbevi in una carta per 8 ore. <strong>Azione bonus</strong> per sfoderare la carta e lanciarlo gratuitamente.</p>
+                <hr>
+                <div class="flex-row">
+                    <label><strong>Incantesimo imbevuto:</strong></label>
+                    <input type="text" id="hiddenAceSpell" placeholder="es. Palla di Fuoco, Fiamma Glaciale" style="flex:2;" value="Palla di Fuoco">
+                    <button id="clearAceUsed">✨ Usato / reset uso</button>
+                </div>
+                <div><input type="checkbox" id="aceUsedCheckbox"> <strong>Carta consumata</strong> (dopo l’uso perde effetto; riposo lungo la reimbeve)</div>
+                <small>💡 Puoi cambiare incantesimo dopo ogni riposo lungo.</small>
+            </div>
+        </div>
+
+        <!-- Fey Touched + Silvery Barbs e Misty Step -->
+        <div class="card">
+            <h2>🍃 Toccato dalle Fate (Fey Touched)</h2>
+            <div class="stat-block">
+                <p><strong>INTELLIGENZA → 20</strong> (+1 incluso). Imparì <strong>Misty Step</strong> (2° livello) e <strong>Silvery Barbs</strong> (1° livello, Ammaliamento).</p>
+                <p>🗲 Ciascuno può essere lanciato <strong>una volta gratis per riposo lungo</strong> senza slot. Puoi lanciarli anche con slot normali.</p>
+                <div class="flex-row" style="justify-content:flex-start; gap: 2rem;">
+                    <label><input type="checkbox" id="mistyStepFreeUsed"> Misty Step (gratis usato)</label>
+                    <label><input type="checkbox" id="silveryBarbsFreeUsed"> Silvery Barbs (gratis usato)</label>
+                </div>
+                <button id="resetFeyTouched" style="margin-top: 6px;">⟳ Reset usi gratuiti (riposo breve/lungo)</button>
+            </div>
+        </div>
+
+        <!-- Alert feat -->
+        <div class="card">
+            <h2>⚔️ Allerta (Alert)</h2>
+            <div class="feature-text">
+                ✔ <strong>Iniziativa +5</strong> (già incluso nel +12 totale)<br>
+                ✔ Impossibile essere <strong>sorpresi</strong> se cosciente.<br>
+                ✔ Creature che non vedi <strong>non ottengono vantaggio</strong> sugli attacchi contro di te.
+            </div>
+        </div>
+    </div>
+
+    <!-- SEZIONE FULL-WIDTH: descrizioni complete dei talenti e caratteristiche (esattamente dal file) -->
+    <div class="full-width card">
+        <h2>📖 Tratti & Talentu (descrizioni originali)</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1rem;">
+            <div>
+                <h3>🃏 Cartomancer (The Book of Many Things)</h3>
+                <div class="feature-text">
+                    <strong>Focus da incantatore:</strong> puoi usare un mazzo di carte come focus.<br>
+                    <strong>CARD TRICKS:</strong> Prestidigitazione gratuita. Puoi nascondere componenti verbali/somatiche come conversazione e maneggio carte.<br>
+                    <strong>HIDDEN ACE:</strong> dopo ogni riposo lungo, scegli un incantesimo dalla lista da Mago/Artefice (anche se non preparato) con tempo di lancio 1 azione e slot adeguato. La carta rimane attiva 8 ore. Azione bonus per lanciare l'incantesimo.
+                </div>
+            </div>
+            <div>
+                <h3>🧚 Toccato dalle Fate (Fey Touched)</h3>
+                <div class="feature-text">
+                    +1 Intelligenza (totale 20).<br>
+                    Imparì <strong>Misty Step</strong> e <strong>Silvery Barbs</strong> (sempre preparati).<br>
+                    Ogni incantesimo può essere lanciato una volta per riposo lungo senza consumare slot. Utilizzi Intelligenza come caratteristica da incantatore.
+                </div>
+            </div>
+            <div>
+                <h3>👁️ Allerta (Alert) - PHB</h3>
+                <div class="feature-text">
+                    +5 ai tiri di iniziativa. Non puoi essere sorpreso. I nemici che non puoi vedere non ottengono vantaggio sugli attacchi contro di te.
+                </div>
+            </div>
+        </div>
+        <div class="feature-text" style="margin-top: 0.6rem;">
+            <strong>📌 Nota rapida:</strong> Il personaggio ha INT 20 (mod +5), DES +2, Iniziativa +12. Possiede già tutti i tratti sopra e può usare carte come focus magico.
+        </div>
+    </div>
+</div>
+
+<script>
+    // -------------------- GESTIONE INVENTARIO DINAMICO --------------------
+    let inventoryItems = ["Mazzo di carte arcane","Libro degli incantesimi","Pergamena di Silvery Barbs","Dadi da gioco","Carta di Hidden Ace (vuota)"];
+
+    function renderInventory() {
+        const container = document.getElementById('inventoryItems');
+        if (!container) return;
+        container.innerHTML = '';
+        inventoryItems.forEach((item, idx) => {
+            const div = document.createElement('div');
+            div.className = 'inventory-item';
+            div.innerHTML = `
+                <span style="word-break:break-word;">📦 ${escapeHtml(item)}</span>
+                <button class="removeItemBtn" data-index="${idx}" style="background:#b65c2e; color:white;">🗑️ Rimuovi</button>
+            `;
+            container.appendChild(div);
+        });
+        document.querySelectorAll('.removeItemBtn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(btn.getAttribute('data-index'), 10);
+                if (!isNaN(index)) {
+                    inventoryItems.splice(index, 1);
+                    renderInventory();
+                }
+            });
+        });
+    }
+
+    document.getElementById('addItemBtn')?.addEventListener('click', () => {
+        const input = document.getElementById('newItemName');
+        const newName = input.value.trim();
+        if (newName) {
+            inventoryItems.push(newName);
+            renderInventory();
+            input.value = '';
+        } else {
+            alert("Inserisci il nome dell'oggetto");
+        }
+    });
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // -------------------- GESTIONE SLOT INCANTESIMI --------------------
+    // struttura: { maxSlots, usedSlots }
+    // livelli 1-5
+    let spellLevels = [
+        { level: 1, max: 4, used: 0 },
+        { level: 2, max: 3, used: 0 },
+        { level: 3, max: 3, used: 0 },
+        { level: 4, max: 2, used: 0 },
+        { level: 5, max: 1, used: 0 }
+    ];
+
+    function renderSpellSlots() {
+        const container = document.getElementById('spellSlotsContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        for (let i = 0; i < spellLevels.length; i++) {
+            const sl = spellLevels[i];
+            const levelDiv = document.createElement('div');
+            levelDiv.className = 'slot-level';
+            levelDiv.innerHTML = `
+                <div style="min-width: 90px;"><strong>Livello ${sl.level}</strong></div>
+                <div class="slot-controls">
+                    <button class="decUsed" data-levelidx="${i}" ${sl.used <= 0 ? 'disabled' : ''}>-1 usato</button>
+                    <span class="used-counter">${sl.used} / ${sl.max}</span>
+                    <button class="incUsed" data-levelidx="${i}" ${sl.used >= sl.max ? 'disabled' : ''}>+1 usato</button>
+                    <button class="resetUsedLevel" data-levelidx="${i}" style="background:#a7a07b;">↺ azzera</button>
+                </div>
+                <div class="slot-controls">
+                    <button class="decMax" data-levelidx="${i}" ${sl.max <= 0 ? 'disabled' : ''}>⬇️ Max-1</button>
+                    <span style="font-weight:bold;">Max: ${sl.max}</span>
+                    <button class="incMax" data-levelidx="${i}">⬆️ Max+1</button>
+                </div>
+            `;
+            container.appendChild(levelDiv);
+        }
+        // attacca eventi dopo il render
+        document.querySelectorAll('.decUsed').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
+                if (spellLevels[idx].used > 0) {
+                    spellLevels[idx].used--;
+                    renderSpellSlots();
+                }
+            });
+        });
+        document.querySelectorAll('.incUsed').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
+                if (spellLevels[idx].used < spellLevels[idx].max) {
+                    spellLevels[idx].used++;
+                    renderSpellSlots();
+                }
+            });
+        });
+        document.querySelectorAll('.resetUsedLevel').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
+                spellLevels[idx].used = 0;
+                renderSpellSlots();
+            });
+        });
+        document.querySelectorAll('.decMax').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
+                if (spellLevels[idx].max > 0) {
+                    spellLevels[idx].max--;
+                    if (spellLevels[idx].used > spellLevels[idx].max) spellLevels[idx].used = spellLevels[idx].max;
+                    renderSpellSlots();
+                }
+            });
+        });
+        document.querySelectorAll('.incMax').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-levelidx'), 10);
+                spellLevels[idx].max++;
+                renderSpellSlots();
+            });
+        });
+    }
+
+    function resetAllSpellUsed() {
+        for (let s of spellLevels) {
+            s.used = 0;
+        }
+        renderSpellSlots();
+    }
+
+    // -------------------- LONG REST (resetta molte risorse) --------------------
+    function performLongRest() {
+        // ripristina PF correnti al massimo (se max HP maggiore di 0)
+        const maxHpInput = document.getElementById('maxHp');
+        const currentHpInput = document.getElementById('currentHp');
+        let maxHp = parseInt(maxHpInput.value, 10);
+        if (!isNaN(maxHp)) {
+            currentHpInput.value = maxHp;
+        } else {
+            currentHpInput.value = 0;
+        }
+        // temp HP a 0
+        const tempHpInput = document.getElementById('tempHp');
+        if (tempHpInput) tempHpInput.value = 0;
+        
+        // reset tutti gli slot incantesimo usati
+        for (let s of spellLevels) {
+            s.used = 0;
+        }
+        renderSpellSlots();
+        
+        // reset Fey Touched usi gratuiti
+        const mistyCheck = document.getElementById('mistyStepFreeUsed');
+        const silveryCheck = document.getElementById('silveryBarbsFreeUsed');
+        if (mistyCheck) mistyCheck.checked = false;
+        if (silveryCheck) silveryCheck.checked = false;
+        
+        // reset Hidden Ace (carta consumata → non consumata, ma l'incantesimo imbuito può rimanere? il giocatore può ri-scegliere, ma rimuoviamo il flag)
+        const aceUsed = document.getElementById('aceUsedCheckbox');
+        if (aceUsed) aceUsed.checked = false;
+        // Opzionale: suggerire al giocatore di reimbevare l'incantesimo -> non cancelliamo il nome, ma reset del flag.
+        // lasciamo il campo spell name intatto, ma il giocatore può modificarlo a piacimento.
+        
+        alert("🌙 Riposo lungo completato! PF ripristinati, slot incantesimi azzerati, usi gratuiti di Fey Touched recuperati, carta Hidden Ace non consumata (se hai reimbevuto dopo il riposo, ricordati di selezionare il nuovo incantesimo).");
+    }
+    
+    // reset solo Fey Touched
+    function resetFeyTouchedOnly() {
+        const misty = document.getElementById('mistyStepFreeUsed');
+        const silvery = document.getElementById('silveryBarbsFreeUsed');
+        if (misty) misty.checked = false;
+        if (silvery) silvery.checked = false;
+    }
+
+    // reset Hidden Ace card usage
+    function resetHiddenAceUsed() {
+        const aceBox = document.getElementById('aceUsedCheckbox');
+        if (aceBox) aceBox.checked = false;
+    }
+
+    // -------------------- SALVA STATI HP E NOTE (in realtime senza salvataggi persistenti ma modificabili) --------------------
+    // Le statistiche vita sono direttamente collegate ai campi input, nessuna store aggiuntivo necessario.
+    
+    // gestione note libere: salvataggio locale opzionale (solo per comodità ma non obbligatorio), facciamo in modo che venga mantenuto in sessione.
+    const freeNotes = document.getElementById('freeNotes');
+    if(localStorage.getItem('carto_notes')) {
+        freeNotes.value = localStorage.getItem('carto_notes');
+    }
+    freeNotes.addEventListener('input', () => {
+        localStorage.setItem('carto_notes', freeNotes.value);
+    });
+    
+    // Salva anche hidden ace spell e custom se volessi, ma non necessario.
+    
+    // inizializzazione
+    renderInventory();
+    renderSpellSlots();
+    
+    // eventi pulsanti globali
+    document.getElementById('resetAllSlots')?.addEventListener('click', resetAllSpellUsed);
+    document.getElementById('longRestBtn')?.addEventListener('click', performLongRest);
+    document.getElementById('resetFeyTouched')?.addEventListener('click', resetFeyTouchedOnly);
+    document.getElementById('clearAceUsed')?.addEventListener('click', resetHiddenAceUsed);
+    
+    // validazione incrociata per evitare che hp max scenda sotto current, ma sono campi editabili liberamente
+    const currentHpField = document.getElementById('currentHp');
+    const maxHpField = document.getElementById('maxHp');
+    function validateHp() {
+        let cur = parseInt(currentHpField.value, 10);
+        let max = parseInt(maxHpField.value, 10);
+        if (isNaN(cur)) cur = 0;
+        if (isNaN(max)) max = 0;
+        if (cur > max && max >= 0) currentHpField.value = max;
+        if (cur < 0) currentHpField.value = 0;
+        if (max < 0) maxHpField.value = 0;
+    }
+    currentHpField.addEventListener('change', validateHp);
+    maxHpField.addEventListener('change', validateHp);
+    
+    // piccolo fix per pulsanti disabilitati dinamici
+    // Inoltre, per rendere più fluida l'esperienza: mostrare sempre modificatore INT ed iniziativa statico
+    // tutto allineato al file.
+    
+    // aggiungiamo possibilità di tenere traccia dell'uso di Misty e Silvery Barbs nei riposi lunghi già gestiti.
+    // E per renderlo intuitivo, anche la Hidden Ace ha il suo checkbox.
+    // Mostriamo i dati completi del file.
+    // aggiungere info dettagliate anche come testo nel footer.
+    
+    // EVENTUALE funzione per sync iniziativa ma è statica
+    console.log("Scheda personalizzabile pronta – tutte le info dal PDF incluse.");
+    
+    // Caricamento eventuali note sul Hidden Ace sull'UI
+    const hiddenAceSpellInput = document.getElementById('hiddenAceSpell');
+    if (localStorage.getItem('hiddenAceSpellStore')) {
+        hiddenAceSpellInput.value = localStorage.getItem('hiddenAceSpellStore');
+    }
+    hiddenAceSpellInput.addEventListener('input', () => {
+        localStorage.setItem('hiddenAceSpellStore', hiddenAceSpellInput.value);
+    });
+    
+    const aceUsedFlag = document.getElementById('aceUsedCheckbox');
+    if (localStorage.getItem('aceUsedFlag') === 'true') aceUsedFlag.checked = true;
+    aceUsedFlag.addEventListener('change', () => {
+        localStorage.setItem('aceUsedFlag', aceUsedFlag.checked);
+    });
+    
+    // anche per i checkbox di fey touched teniamo traccia
+    const mistyBox = document.getElementById('mistyStepFreeUsed');
+    const silveryBox = document.getElementById('silveryBarbsFreeUsed');
+    if (localStorage.getItem('mistyUsed') === 'true') mistyBox.checked = true;
+    if (localStorage.getItem('silveryUsed') === 'true') silveryBox.checked = true;
+    mistyBox.addEventListener('change', () => localStorage.setItem('mistyUsed', mistyBox.checked));
+    silveryBox.addEventListener('change', () => localStorage.setItem('silveryUsed', silveryBox.checked));
+    
+    // memorizza slot incantesimi in localStorage opzionale? non richiesto ma per persistenza base
+    function saveSpellData() {
+        const data = spellLevels.map(l => ({max: l.max, used: l.used}));
+        localStorage.setItem('spellSlotsData', JSON.stringify(data));
+    }
+    function loadSpellData() {
+        const raw = localStorage.getItem('spellSlotsData');
+        if (raw) {
+            try {
+                const saved = JSON.parse(raw);
+                if (Array.isArray(saved) && saved.length === spellLevels.length) {
+                    for (let i=0; i<saved.length; i++) {
+                        if (typeof saved[i].max === 'number') spellLevels[i].max = saved[i].max;
+                        if (typeof saved[i].used === 'number') spellLevels[i].used = saved[i].used;
+                    }
+                    renderSpellSlots();
+                }
+            } catch(e) {}
+        }
+    }
+    // salva ogni volta che si modifica uno slot - richiamiamo dalla render dopo modifiche
+    const origRender = renderSpellSlots;
+    window.renderSpellSlots = function() {
+        origRender();
+        saveSpellData();
+    };
+    renderSpellSlots = window.renderSpellSlots;
+    renderSpellSlots();
+    loadSpellData();
+    
+    // salva anche hp max/current
+    function persistHp() {
+        localStorage.setItem('hp_cur', currentHpField.value);
+        localStorage.setItem('hp_max', maxHpField.value);
+        localStorage.setItem('hp_temp', document.getElementById('tempHp').value);
+    }
+    currentHpField.addEventListener('change', persistHp);
+    maxHpField.addEventListener('change', persistHp);
+    document.getElementById('tempHp').addEventListener('change', persistHp);
+    if (localStorage.getItem('hp_cur')) currentHpField.value = localStorage.getItem('hp_cur');
+    if (localStorage.getItem('hp_max')) maxHpField.value = localStorage.getItem('hp_max');
+    if (localStorage.getItem('hp_temp')) document.getElementById('tempHp').value = localStorage.getItem('hp_temp');
+    
+    // salva inventario
+    function saveInventory() {
+        localStorage.setItem('carto_inventory', JSON.stringify(inventoryItems));
+    }
+    const origInvRender = renderInventory;
+    window.renderInventory = function() {
+        origInvRender();
+        saveInventory();
+    };
+    renderInventory = window.renderInventory;
+    const storedInv = localStorage.getItem('carto_inventory');
+    if (storedInv) {
+        try {
+            inventoryItems = JSON.parse(storedInv);
+            if (!Array.isArray(inventoryItems)) inventoryItems = [];
+            renderInventory();
+        } catch(e) {}
+    } else {
+        renderInventory();
+    }
+    window.renderInventory();
+    
+    // override addItem
+    const oldAdd = document.getElementById('addItemBtn').onclick;
+    document.getElementById('addItemBtn').addEventListener('click', () => {
+        const input = document.getElementById('newItemName');
+        if (input.value.trim()) inventoryItems.push(input.value.trim());
+        renderInventory();
+        input.value = '';
+    });
+</script>
+</body>
+</html>
